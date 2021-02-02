@@ -3,8 +3,7 @@ import os,sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import json
 import requests
-from pydicom import dcmread
-from pydicom.filebase import DicomBytesIO
+from common.exceptions import APITestException
 
 def get_env_var(var_name):
     tmp_value = os.environ.get(var_name)
@@ -20,38 +19,34 @@ def get_targetproduct():
     else:
         return target_product
 
+
+def dummy_be_set(api_id, status_code, test_type, sleep_time):
+    if sleep_time == None:
+        sleep_time = 0
+    return dummy_set('http://10.220.150.115:7720', None, api_id, status_code, test_type, sleep_time)
+
+def dummy_cxr3_set(api_id, status_code, test_type, sleep_time):
+    if sleep_time == None:
+        sleep_time = 0
+    return dummy_set('http://10.220.150.115:7711', None, api_id, status_code, test_type, sleep_time)
+
 def dummy_set(url, version, api_id, status_code, test_type, sleep_time):
     if version == None or api_id == None or status_code == None or test_type == None: 
-        raise Exception("error - TODO APITestException")
+        raise APITestException("error - required var is missing(version, api_id, status_code, test_type)")
     
     headers = {'Content-Type': 'application/json'}
     payload = {
         'version': version,
         'api_id': api_id,
         'status_code': status_code,
-        'test_type': test_type
-        # 'sleep_time': Env4Dev.EMAILID
+        'test_type': test_type,
+        'sleep_time': sleep_time
     }
 
     response = requests.post(url + "/dummy-setting", headers=headers, data=json.dumps(payload, indent=4))
     if response.status_code != 200:
-        raise Exception("error - TODO APITestException")
-
-
-class UrlManager():
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
-    
-    def get_gcm_url(self):
-        # TODO 컴포넌트와 테스트 모드에 따라 base_url을 반환해 주자
-        return ''
-
-    def get_gi_url(self):
-        return ''
-
-    def get_logviewer_url(self):
-        return ''
+        raise APITestException("Failed to set dummy-server - {}".format(response.text))
+    return True
 
 def open_json_file(filepath):
     with open(filepath) as json_file:
@@ -66,10 +61,44 @@ def get_file_binary(filepath):
         f.close()
     return sample
 
+# def get_dicom_binary(filepath):
+#     with open(filepath, 'rb') as f:
+#         raw = DicomBytesIO(f)
+#         ds = dcmread(raw)
+#         f.close()
+#     return ds
 
-def get_dicom_binary(filepath):
-    with open(filepath, 'rb') as f:
-        raw = DicomBytesIO(f)
-        ds = dcmread(raw)
-        f.close()
-    return ds
+class UrlManager():
+    """ 원래는 현재 테스트 대상 url을 동적으로 반환하기 위해 만듬"""
+    DUMMY_BE_URL = "http://10.220.150.115:7720"
+    DUMMY_GW_URL = "http://10.220.150.115:7730"
+    DUMMY_ISCXR3_URL = "http://10.220.150.115:7711"
+    DUMMY_ISCXR2_URL = "http://10.220.150.115:7712"
+    DUMMY_ISCXR1_URL = "http://10.220.150.115:7713"
+    DUMMY_ISMMG_URL = "http://10.220.150.115:7714"
+    
+    test_mode = "dummy"
+
+    # def __init__(self, test_mode):
+    #     self.test_mode = test_mode
+    
+    def set_testmode(self, test_mode):
+        self.test_mode = test_mode
+
+    def get_gcm_url(self):
+        # TODO 컴포넌트와 테스트 모드에 따라 base_url을 반환해 주자
+        return ''
+
+    def get_gi_url(self):
+        return ''
+
+    def get_logviewer_url(self):
+        return ''
+
+# class BEAPIInfo():
+
+
+# class GWAPIInfo():
+
+# class ISAPIInfo():
+
