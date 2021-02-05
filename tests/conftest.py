@@ -14,7 +14,7 @@ def pytest_addoption(parser):
     parser.addoption("--gw_url", action="store", default="http://10.120.0.11:91", help="Gateway test URL. By default: http://10.120.0.11:91")
     parser.addoption("--be_url", action="store", default="http://10.120.0.11:8001", help="Insight Backend test URL. By default: http://10.120.0.11:91")
     parser.addoption("--is_url", action="store", default="http://10.220.150.115:7711", help="Inference Server test URL. By default: http://10.120.0.11:91")
-    parser.addoption("--lv_url", action="store", default="not_yet_defined", help="LogViewer server test URL. By default: not_yet_defined")
+    parser.addoption("--lv_url", action="store", default="https://log-collector-server-dev.lunit.io", help="LogViewer server test URL. By default: not_yet_defined")
     parser.addoption('--integration', action='store_true', help='run include integration tests')
 
 def pytest_runtest_setup(item):
@@ -26,6 +26,11 @@ def pytest_runtest_setup(item):
 def get_dirpath():
     dirname = os.path.dirname(os.path.abspath(__file__))
     return dirname
+
+@pytest.fixture(scope='session')
+def get_lv_baseurl(pytestconfig):
+    return pytestconfig.getoption("--lv_url")
+
 
 ###### BE ######
 @pytest.fixture(scope='session')
