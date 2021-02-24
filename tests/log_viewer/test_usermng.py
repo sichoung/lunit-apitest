@@ -6,7 +6,7 @@ import os, sys, io
 import requests
 import json, time
 from common import api_test_util as util
-from common.api_constants import LogViewerConstants as APIInfo
+from common.api_constants import LogViewerConstants as url_manager
 
 new_test_id = "lunit_qe_id"
 new_test_pw = "lunit_qe_pw"

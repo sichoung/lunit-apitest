@@ -6,7 +6,7 @@ import requests
 import json, time
 from datetime import datetime
 from common import api_test_util as util
-from common.api_constants import LogViewerConstants as APIInfo
+from common.api_constants import LogViewerConstants as url_manager
 
 test_id = "test"
 test_pw = "test"

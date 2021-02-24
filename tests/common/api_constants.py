@@ -18,7 +18,10 @@ class LogViewerConstants():
     getloglist_api_path = "/api/v1/logs"
     logupload_api_path ="​/api​/v1​/logs"
 
-
+    #### ACCOUNT ####
+    test_email = "test@lunit.io"
+    test_pw = "test"
+    test_name = "apitest user"
 
 
 # class BackendConstants():
