@@ -9,7 +9,6 @@ from common import api_test_util as util
 this_api_path = '/cxr-v3/dcm/'
 
 # Accept-Language: en
-
 # def test_upload_200ok(get_be_baseurl, get_dirpath, get_apikey):
 #     # 400 bad request가 나서 아래 방법으로 전송해야 함 
 #     headers = {"Authorization": "Bearer "+get_apikey,

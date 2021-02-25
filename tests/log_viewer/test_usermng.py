@@ -50,7 +50,7 @@ def test_useraccount_flow001(get_lv_baseurl):
         "username": new_test_id,
         "email": new_test_id+"@lunit.io"
     }
-    response = requests.post(get_lv_baseurl + APIInfo.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
     access_token = response_body.get("accessToken")
@@ -63,7 +63,7 @@ def test_useraccount_flow001(get_lv_baseurl):
         "newPassword": new_test_pw_chg,
         "username": new_test_id
     }
-    response = requests.put(get_lv_baseurl + APIInfo.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
     assert True == response_body.get("isChanged")
@@ -73,7 +73,7 @@ def test_useraccount_flow001(get_lv_baseurl):
         "password": new_test_pw_chg,
         "username": new_test_id
     }
-    response = requests.post(get_lv_baseurl + APIInfo.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
     access_token = response_body.get("accessToken")
@@ -86,7 +86,7 @@ def test_useraccount_flow001(get_lv_baseurl):
         "newPassword": new_test_pw,
         "username": new_test_id
     }
-    response = requests.put(get_lv_baseurl + APIInfo.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
     assert True == response_body.get("isChanged")
@@ -96,7 +96,7 @@ def test_useraccount_flow001(get_lv_baseurl):
     payload = {
         "token": access_token
     }
-    response = requests.post(get_lv_baseurl + APIInfo.verifytkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    response = requests.post(get_lv_baseurl + url_manager.verifytkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
     assert True == response_body.get("isVerify")
@@ -106,7 +106,7 @@ def test_useraccount_flow001(get_lv_baseurl):
     payload = {
         "token": "faskjfqjroiqwefnasdfaosf;ij49-09123o12ofasjlskafasdfasdfa"
     }
-    response = requests.post(get_lv_baseurl + APIInfo.verifytkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    response = requests.post(get_lv_baseurl + url_manager.verifytkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json() 
     assert False == response_body.get("isVerify")
@@ -116,7 +116,7 @@ def test_useraccount_flow001(get_lv_baseurl):
     payload = {
         "token": access_token
     }
-    response = requests.post(get_lv_baseurl + APIInfo.refreshtkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    response = requests.post(get_lv_baseurl + url_manager.refreshtkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     # assert 200 == response.status_code
     response_body = response.json() # '{"code":"500.1000.004","message":"Refresh Token expired or invalid."}'
     # new_access_token = response_body.get("accessToken")
@@ -126,7 +126,7 @@ def test_useraccount_flow001(get_lv_baseurl):
     payload = {
         "token": refresh_token
     }
-    response = requests.post(get_lv_baseurl + APIInfo.refreshtkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    response = requests.post(get_lv_baseurl + url_manager.refreshtkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json() # '{"id":"601ba9d406cf29107efb573a","username":"lunit_qe_id","accessToken":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdW5pdF9xZV9pZCIsImF1dGgiOltdLCJpYXQiOjE2MTI0Mjk3ODYsImV4cCI6MTYxMjQzMzM4Nn0.KbXq2rmwdJO7dAMXE_bRRT0l_jpEkkBlL3_Rf8wiwvpe7qoH9vK_sAm8p-vqzVlWBu1rtxfe5bWEYFQsK_ZOMA","refreshToken":"7872341ea4cc446d94d2c0d92306db2b"}'
     new_access_token = response_body.get("accessToken")
@@ -146,7 +146,7 @@ def test_useraccount_flow001(get_lv_baseurl):
     payload = {
         "token": new_access_token
     }
-    response = requests.post(get_lv_baseurl + APIInfo.verifytkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    response = requests.post(get_lv_baseurl + url_manager.verifytkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
     assert True == response_body.get("isVerify")

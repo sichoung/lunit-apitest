@@ -160,10 +160,10 @@ def test_predict_bodynoparameters(get_be_baseurl, get_apikey, get_dicom_uuid):
     assert "dicom" in first_case
     print(f"dicom id = {first_case.get('dicom')}")
     assert "view_name" in first_case
-
+    #### 디폴트 값 처리 확인 ####
     assert 0.15 == response_body.get("threshold"), "기대한 threshold 디폴트값과 다릅니다!"
     assert False == response_body.get("filtering")
-
+    ############################
     assert "status" in response_body
     assert "SUCCESS" == response_body.get("status")
     assert "status_code" in response_body
