@@ -10,11 +10,11 @@ from common.api_constants import LogViewerConstants as APIInfo
 
 @pytest.fixture(scope='session')
 def get_lv_token(get_lv_baseurl):
-    def _data(test_id, test_pw):
+    def _data(test_email, test_pw):
         headers = {"Content-Type": "application/json"}
         payload = {
-            "password": test_id,
-            "username": test_pw
+            "email": test_email,
+            "password": test_pw
         }
         response = requests.post(get_lv_baseurl + APIInfo.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
         if response.status_code == 200: 
