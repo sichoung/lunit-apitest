@@ -1,0 +1,41 @@
+This is not valid formatted logs!!!!!!!!!!
+[02/Feb/2021:06:09:44 +0000] "GET /cxr-v3/predictions/tempppppp/report/?lesion_names=atelectasis%2Ccalcification%2Ccardiomegaly%2Cconsolidation%2Cfibrosis%2Cmediastinal_widening%2Cnodule%2Cpleural_effusion%2Cpneumoperitoneum%2Cpneumothorax HTTP/1.0" 404 77 "-" "python-requests/2.24.0"
+[04/Feb/2021:06:50:10 +0000] "GET /cxr-v3/predictions/694f3c20-997b-4b23-ba60-556f94b7daab/v2/contour/?lesion_names=atelectasis,calcification,cardiomegaly,consolidation,fibrosis,mediastinal_widening,nodule,pleural_effusion,pneumoperitoneum,pneumothorax&sc_type=report&tb_screening=true&show_lesion_name=true&show_abn_score=false&show_mw_cm_score_only=false&merge=true&merge_threshold=0.2&show_license=true HTTP/1.0" 200 12468 "-" "PostmanRuntime/7.26.8"
+[04/Feb/2021:06:55:31 +0000] "GET /cxr-v3/predictions/694f3c20-997b-4b23-ba60-556f94b7daab/contour.jpg/?lesion_names=atelectasis,calcification,cardiomegaly,consolidation,fibrosis,mediastinal_widening,nodule,pleural_effusion,pneumoperitoneum,pneumothorax&sc_type=report&tb_screening=true&show_lesion_name=true&show_abn_score=false&show_mw_cm_score_only=false&merge=true&merge_threshold=0.01 HTTP/1.0" 200 187907 "-" "PostmanRuntime/7.26.8"
+[ERROR  ] 2021-02-04 01:37:39,834  Internal Server Error: /predict/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.7/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.7/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/root/.local/lib/python3.7/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.7/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.7/site-packages/django/views/generic/base.py", line 71, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.7/site-packages/rest_framework/views.py", line 497, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.7/site-packages/rest_framework/views.py", line 457, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.7/site-packages/rest_framework/views.py", line 468, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.7/site-packages/rest_framework/views.py", line 494, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "<frozen inference_server.views>", line 70, in post
+  File "/root/.local/lib/python3.7/site-packages/rest_framework/request.py", line 424, in POST
+    self._load_data_and_files()
+  File "/root/.local/lib/python3.7/site-packages/rest_framework/request.py", line 272, in _load_data_and_files
+    self._data, self._files = self._parse()
+  File "/root/.local/lib/python3.7/site-packages/rest_framework/request.py", line 347, in _parse
+    parsed = parser.parse(stream, media_type, self.parser_context)
+  File "/root/.local/lib/python3.7/site-packages/rest_framework/parsers.py", line 109, in parse
+    data, files = parser.parse()
+  File "/root/.local/lib/python3.7/site-packages/django/http/multipartparser.py", line 281, in parse
+    any(handler.upload_complete() for handler in handlers)
+  File "/root/.local/lib/python3.7/site-packages/django/http/multipartparser.py", line 281, in <genexpr>
+    any(handler.upload_complete() for handler in handlers)
+  File "<frozen inference_server.uploadhandler>", line 18, in upload_complete
+TypeError: unsupported operand type(s) for -: 'float' and 'NoneType'
+192.168.160.3 - - [04/Feb/2021:01:37:39 +0000] "POST /predict/ HTTP/1.0" 500 27 "-" "PostmanRuntime/7.26.8"
+ 

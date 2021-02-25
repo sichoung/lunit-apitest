@@ -17,6 +17,7 @@ class LogViewerConstants():
     #### LOGS ####
     getloglist_api_path = "/api/v1/logs"
     logupload_api_path ="​/api​/v1​/logs"
+    logdownload_api_path = "/api/v1/logs/download"
 
     #### ACCOUNT ####
     test_email = "test@lunit.io"

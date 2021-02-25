@@ -100,21 +100,6 @@ def get_gcm_cxr3_baseurl(get_cmd_opt):
 
 
 ###### LogViewer ######
-@pytest.fixture(scope='session')
-def lv_gettoken(access_token, email_id, passwd):
-    if(access_token != None):
-        return access_token
-    else:
-        return None
-
-@pytest.fixture(scope='session')
-def lv_api_url(pytestconfig):
-    return 'https://log-collector-server-dev.lunit.io'
-    # api_version = pytestconfig.getoption("--api_version").lower()
-    # if api_version in ['v24', 'v25', 'v26', 'v27']:
-    #     return 'https://log-collector-server-dev.lunit.io' + api_version
-    # else:
-    #     raise ValueError('Unknown api version: ' + api_version)
 
 
 

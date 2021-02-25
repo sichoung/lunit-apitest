@@ -1,0 +1,78 @@
+[GW][2.5.0][INFO][2021-02-04 04:41:11,935][tid_aaaaaaaaaaaaa] <frozen gateway:35 Task(16) : Remove file(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.1189323278013401809452771770079075848809065214581.dcm.comp).
+[GW][2.5.0][ERROR][2021-02-04 04:47:54,105][tid_aaaaaaaaaaaaa] middleware:58 [35m{'content-type': ('Content-Type', 'application/json'), 'vary': ('Vary', 'Accept'), 'allow': ('Allow', 'POST, OPTIONS')}[0m
+[GW][2.5.0][ERROR][2021-02-04 04:47:54,105][tid_aaaaaaaaaaaaa] middleware:58 [35m{'content-type': ('Content-Type', 'application/json'), 'vary': ('Vary', 'Accept'), 'allow': ('Allow', 'POST, OPTIONS')}[0m
+[GW][2.5.0][ERROR][2021-02-04 04:47:54,105] middleware:58 [35mb'{"message":"login failed","failure_count":1,"lockout_count":3,"cool_off_seconds":60}'[0m
+[GW][2.5.0][ERROR][2021-02-04 04:47:54,105] middleware:58 [35mb'{"message":"login failed","failure_count":1,"lockout_count":3,"cool_off_seconds":60}'[0m
+[GW][2.5.0][ERROR][2021-02-04 04:47:54,231] middleware:58 [35m{'content-type': ('Content-Type', 'application/json'), 'vary': ('Vary', 'Accept'), 'allow': ('Allow', 'POST, OPTIONS')}[0m
+[GW][2.5.0][INFO][2021-02-04 07:40:29,601][tid_aaaaaaaaaaaaa] <frozen scripts:178 {'filepath': './Received/CR.X.1.2.276.0.7230010.3.1.4.413926144.91.1612424427.783830', 'calling_aetitle': 'aging', 'calling_address': '10.220.250.103', 'is_debug': False}
+[GW][2.5.0][INFO][2021-02-04 07:40:29,615][tid_aaaaaaaaaaaaa] <frozen scripts:239 New DICOM received from aging(10.220.250.103). SOPUID = 1.2.276.0.7230010.3.1.4.168492052.18904.1569573862.486621
+[GW][2.5.0][INFO][2021-02-04 07:40:29,621][tid_aaaaaaaaaaaaa] <frozen scripts:405 Receive DICOM assigned to Task(17)
+[GW][2.5.0][INFO][2021-02-04 07:40:29,658][tid_aaaaaaaaaaaaa] <frozen gateway:274 Fetch 1 tasks.
+[GW][2.5.0][INFO][2021-02-04 07:40:29,867][tid_aaaaaaaaaaaaa] <frozen gateway:35 Task(17) : Upload DICOM FID = 17, SOPUID = 1.2.276.0.7230010.3.1.4.168492052.18904.1569573862.486621
+[GW][2.5.0][INFO][2021-02-04 07:40:31,780][tid_aaaaaaaaaaaaa] <frozen gateway:75 1 tasks remains in post upload worker.
+[GW][2.5.0][INFO][2021-02-04 07:40:31,785][tid_aaaaaaaaaaaaa] <frozen gateway:35 Task(17) : Try to Analyze.
+[GW][2.5.0][INFO][2021-02-04 07:40:31,790][tid_aaaaaaaaaaaaa] <frozen gateway:35 Task(17) : {'case': [{'dicom': '08609d6a-69ee-45fc-8834-03cef1750bac', 'view_name': 'frontal'}], 'threshold': 0.15, 'filtering': False}
+[GW][2.5.0][INFO][2021-02-04 07:40:34,960][tid_aaaaaaaaaaaaa] <frozen gateway:35 Task(17) : Lunit INSIGHT analysis is done.
+[GW][2.5.0][INFO][2021-02-04 07:40:37,226][tid_aaaaaaaaaaaaa] <frozen gateway:35 Task(17) : Wait for 0 seconds before file send.
+[GW][2.5.0][INFO][2021-02-04 07:40:37,293][tid_aaaaaaaaaaaaa] <frozen gateway:35 Task(17) : Try to send DICOM(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.9047961794017700412247733205122169466729236156891.dcm.comp) to aging (10.120.0.11:10004)
+[GW][2.5.0][INFO][2021-02-04 07:40:37,375][tid_aaaaaaaaaaaaa] <frozen gateway:35 Task(17) : Sending DICOM(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.9047961794017700412247733205122169466729236156891.dcm.comp) to aging (10.120.0.11:10004) is done.
+[GW][2.5.0][INFO][2021-02-04 07:40:37,410][tid_aaaaaaaaaaaaa] <frozen gateway:35 Task(17) : Completed.
+[GW][2.5.0][INFO][2021-02-04 07:40:37,411] <frozen gateway:35 Task(17) : Remove file(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.9047961794017700412247733205122169466729236156891.dcm.comp).
+[GW][2.5.0][DEBUG][2021-02-04 08:04:51,055] <frozen gateway:259 Try to clear repository. Repository Keep Duration: 24
+[GW][2.5.0][DEBUG][2021-02-04 08:04:51,056] <frozen gateway:264 Try to clear excluded. Excluded Keep Duration: 1
+[GW][2.5.0][DEBUG][2021-02-04 09:04:51,400] <frozen gateway:259 Try to clear repository. Repository Keep Duration: 24
+[GW][2.5.0][DEBUG][2021-02-04 09:04:51,401] <frozen gateway:264 Try to clear excluded. Excluded Keep Duration: 1
+[GW][2.5.0][INFO][2021-02-04 09:43:54,737][tid_bbbbbbbbbb] <frozen scripts:178 {'filepath': './Received/CR.X.1.2.276.0.7230010.3.1.4.413926144.91.1612431833.783831', 'calling_aetitle': 'aging', 'calling_address': '10.220.250.103', 'is_debug': False}
+[GW][2.5.0][INFO][2021-02-04 09:43:54,750][tid_bbbbbbbbbb] <frozen scripts:239 New DICOM received from aging(10.220.250.103). SOPUID = 1.2.840.113619.2.203.4.2147483647.1378922983.6462.1
+[GW][2.5.0][DEBUG][2021-02-04 09:43:54,751][tid_bbbbbbbbbb] <frozen app:245 DICOM file is not valid.  Bypass age limitation
+[GW][2.5.0][DEBUG][2021-02-04 09:43:54,751][tid_bbbbbbbbbb] <frozen app:245 string index out of range
+[GW][2.5.0][INFO][2021-02-04 09:43:54,757] <frozen scripts:405 Receive DICOM assigned to Task(18)
+[GW][2.5.0][INFO][2021-02-04 09:43:54,823] <frozen gateway:274 Fetch 1 tasks.
+[GW][2.5.0][INFO][2021-02-04 09:43:55,308][tid_cccccccccc] <frozen gateway:35 Task(18) : Upload DICOM FID = 18, SOPUID = 1.2.840.113619.2.203.4.2147483647.1378922983.6462.1
+[GW][2.5.0][INFO][2021-02-04 09:43:55,795][tid_cccccccccc] <frozen gateway:75 1 tasks remains in post upload worker.
+[GW][2.5.0][INFO][2021-02-04 09:43:55,801][tid_cccccccccc] <frozen gateway:35 Task(18) : Try to Analyze.
+[GW][2.5.0][INFO][2021-02-04 09:43:55,807][tid_cccccccccc] <frozen gateway:35 Task(18) : {'case': [{'dicom': 'bb4f53c5-477f-45c2-a60b-3c4c0e4c2a88', 'view_name': 'frontal'}], 'threshold': 0.15, 'filtering': False}
+[GW][2.5.0][INFO][2021-02-04 09:43:58,119][tid_cccccccccc] <frozen gateway:35 Task(18) : Lunit INSIGHT analysis is done.
+[GW][2.5.0][INFO][2021-02-04 09:44:00,139][tid_cccccccccc] <frozen gateway:35 Task(18) : Wait for 0 seconds before file send.
+[GW][2.5.0][INFO][2021-02-04 09:44:00,214][tid_cccccccccc] <frozen gateway:35 Task(18) : Try to send DICOM(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.6176213252610293692007902392488506132391528814595.dcm.comp) to aging (10.120.0.11:10004)
+[GW][2.5.0][ERROR][2021-02-04 09:44:00,243][tid_cccccccccc] <frozen gateway:35 Task(18) : [E010202] DICOM store operation has failed. 10.120.0.11:10004
+[GW][2.5.0][DEBUG][2021-02-04 09:44:00,244][tid_cccccccccc] <frozen gateway:35 Task(18) : Store operation is failed with error code=1
+[GW][2.5.0][DEBUG][2021-02-04 09:44:00,244][tid_cccccccccc] <frozen gateway:35 Task(18) : b'F: Association Request Failed: 0006:031b Failed to establish association\nF: 0006:0317 Peer aborted Association (or never connected)\nF: 0006:031c TCP Initialization Error: Connection refused\n'
+[GW][2.5.0][INFO] [2021-02-04 09:44:00,247][tid_cccccccccc] <frozen gateway:35 Task(18) : Remove file(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.6176213252610293692007902392488506132391528814595.dcm.comp).
+[GW][2.5.0][WARNING] [2021-02-04 09:44:00,247][tid_cccccccccc] <frozen gateway:240 Retry last Task. Result status(SCUSTORE_FAILED)
+[GW][2.5.0][INFO] [2021-02-04 09:44:05,258][tid_cccccccccc] <frozen gateway:35 Task(18) : Wait for 0 seconds before file send.
+[GW][2.5.0][INFO] [2021-02-04 09:44:05,322][tid_cccccccccc] <frozen gateway:35 Task(18) : Try to send DICOM(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.6176213252610293692007902392488506132391528814595.dcm.comp) to aging (10.120.0.11:10004)
+[GW][2.5.0][ERROR] [2021-02-04 09:44:05,351][tid_cccccccccc] <frozen gateway:35 Task(18) : [E010202] DICOM store operation has failed. 10.120.0.11:10004
+[GW][2.5.0][DEBUG] [2021-02-04 09:44:05,351][tid_cccccccccc] <frozen gateway:35 Task(18) : Store operation is failed with error code=1
+[GW][2.5.0][DEBUG] [2021-02-04 09:44:05,352][tid_cccccccccc] <frozen gateway:35 Task(18) : b'F: Association Request Failed: 0006:031b Failed to establish association\nF: 0006:0317 Peer aborted Association (or never connected)\nF: 0006:031c TCP Initialization Error: Connection refused\n'
+[GW][2.5.0][INFO] [2021-02-04 09:44:05,355][tid_cccccccccc] <frozen gateway:35 Task(18) : Remove file(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.6176213252610293692007902392488506132391528814595.dcm.comp).
+[GW][2.5.0][WARNING] [2021-02-04 09:44:05,355][tid_cccccccccc] <frozen gateway:240 Retry last Task. Result status(SCUSTORE_FAILED)
+[GW][2.5.0][INFO][2021-02-04 09:44:10,369][tid_cccccccccc] <frozen gateway:35 Task(18) : Wait for 0 seconds before file send.
+[GW][2.5.0][INFO][2021-02-04 09:44:10,433][tid_cccccccccc] <frozen gateway:35 Task(18) : Try to send DICOM(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.6176213252610293692007902392488506132391528814595.dcm.comp) to aging (10.120.0.11:10004)
+[GW][2.5.0][ERROR] [2021-02-04 09:44:10,462][tid_cccccccccc] <frozen gateway:35 Task(18) : [E010202] DICOM store operation has failed. 10.120.0.11:10004
+[GW][2.5.0][DEBUG] [2021-02-04 09:44:10,462][tid_cccccccccc] <frozen gateway:35 Task(18) : Store operation is failed with error code=1
+[GW][2.5.0][DEBUG] [2021-02-04 09:44:10,462][tid_cccccccccc] <frozen gateway:35 Task(18) : b'F: Association Request Failed: 0006:031b Failed to establish association\nF: 0006:0317 Peer aborted Association (or never connected)\nF: 0006:031c TCP Initialization Error: Connection refused\n'
+[GW][2.5.0][INFO][2021-02-04 09:44:10,466][tid_cccccccccc] <frozen gateway:35 Task(18) : Remove file(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.6176213252610293692007902392488506132391528814595.dcm.comp).
+[GW][2.5.0][WARNING] [2021-02-04 09:44:10,466][tid_cccccccccc] <frozen gateway:240 Retry last Task. Result status(SCUSTORE_FAILED)
+[GW][2.5.0][INFO][2021-02-04 09:44:15,480][tid_cccccccccc] <frozen gateway:35 Task(18) : Wait for 0 seconds before file send.
+[GW][2.5.0][INFO][2021-02-04 09:44:15,544][tid_cccccccccc] <frozen gateway:35 Task(18) : Try to send DICOM(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.6176213252610293692007902392488506132391528814595.dcm.comp) to aging (10.120.0.11:10004)
+[GW][2.5.0][ERROR] [2021-02-04 09:44:15,573][tid_cccccccccc] <frozen gateway:35 Task(18) : [E010202] DICOM store operation has failed. 10.120.0.11:10004
+[GW][2.5.0][DEBUG] [2021-02-04 09:44:15,574][tid_cccccccccc] <frozen gateway:35 Task(18) : Store operation is failed with error code=1
+[GW][2.5.0][DEBUG] [2021-02-04 09:44:15,574][tid_cccccccccc] <frozen gateway:35 Task(18) : b'F: Association Request Failed: 0006:031b Failed to establish association\nF: 0006:0317 Peer aborted Association (or never connected)\nF: 0006:031c TCP Initialization Error: Connection refused\n'
+[GW][2.5.0][INFO][2021-02-04 09:44:15,577][tid_cccccccccc] <frozen gateway:35 Task(18) : Remove file(/workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.6176213252610293692007902392488506132391528814595.dcm.comp).
+[GW][2.5.0][ERROR] [2021-02-04 09:44:15,578][tid_cccccccccc] <frozen gateway:35 Task(18) : task retry count is exceeded
+[GW][2.5.0][ERROR] [2021-02-04 09:44:15,578][tid_cccccccccc] <frozen gateway:35 Task(18) : Task end with EXCEED_RETRY_COUNT
+[GW][2.5.0][INFO][2021-02-04 09:44:15,582][tid_cccccccccc] <frozen gateway:26 Delete ./Received/CR.X.1.2.276.0.7230010.3.1.4.413926144.91.1612431833.783831
+[GW][2.5.0][INFO][2021-02-04 09:44:15,585][tid_cccccccccc] <frozen gateway:26 Delete /workspace/sources/lunit-insight-gateway/Received/1.2.410.200083.6176213252610293692007902392488506132391528814595.dcm
+[GW][2.5.0][INFO][2021-02-04 09:46:30,702][tid_cccccccccc] <frozen scripts:178 {'filepath': './Received/CR.X.1.2.276.0.7230010.3.1.4.413926144.91.1612431989.783832', 'calling_aetitle': 'aging', 'calling_address': '10.220.250.103', 'is_debug': False}
+[GW][2.5.0][INFO][2021-02-04 09:46:30,715][tid_cccccccccc] <frozen scripts:239 New DICOM received from aging(10.220.250.103). SOPUID = 1.2.840.113619.2.203.4.2147483647.1378922983.6462.1
+[GW][2.5.0][DEBUG] [2021-02-04 09:46:30,716][tid_cccccccccc] <frozen app:245 DICOM file is not valid.  Bypass age limitation
+[GW][2.5.0][DEBUG] [2021-02-04 09:46:30,716][tid_cccccccccc] <frozen app:245 string index out of range
+[GW][2.5.0][INFO][2021-02-04 09:46:30,721][tid_cccccccccc] <frozen scripts:405 Receive DICOM assigned to Task(19)
+[GW][2.5.0][INFO][2021-02-04 09:46:31,191][tid_cccccccccc] <frozen gateway:274 Fetch 1 tasks.
+[GW][2.5.0][INFO][2021-02-04 09:46:31,675][tid_cccccccccc] <frozen gateway:35 Task(19) : Upload DICOM FID = 19, SOPUID = 1.2.840.113619.2.203.4.2147483647.1378922983.6462.1
+[GW][2.5.0][INFO][2021-02-04 09:46:32,727][tid_cccccccccc] <frozen gateway:75 1 tasks remains in post upload worker.
+[INFO] 2021-02-04 09:46:30,721 <frozen scripts:405 Receive DICOM assigned to Task(19)
+[INFO] 2021-02-04 09:46:31,191 <frozen gateway:274 Fetch 1 tasks.
+[INFO] 2021-02-04 09:46:31,675 <frozen gateway:35 Task(19) : Upload DICOM FID = 19, SOPUID = 1.2.840.113619.2.203.4.2147483647.1378922983.6462.1
+[INFO] 2021-02-04 09:46:32,727 <frozen gateway:75 1 tasks remains in post upload worker.
