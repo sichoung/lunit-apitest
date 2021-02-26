@@ -9,6 +9,7 @@ from common import api_test_util as util
 from common.api_constants import LogViewerConstants as url_manager
 
 new_test_id = "lunit_qe_id"
+new_test_email = "lunit_qe_id@lunit.io"
 new_test_pw = "lunit_qe_pw"
 new_test_pw_chg = "lunit_qe_pw_chg"
 
@@ -29,11 +30,11 @@ def test_useraccount_flow001(get_lv_baseurl):
     headers = {"Content-Type": "application/json"}
     # 신규가입
     # payload = {
-    #     "email": new_test_id + "@lunit.io",
+    #     "email": new_test_email,
     #     "password": new_test_pw,
     #     "username": new_test_id
     # }
-    # response = requests.post(get_lv_baseurl + signup_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    # response = requests.post(get_lv_baseurl + url_manager.signup_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     # assert 200 == response.status_code
     # # '{"id":"601ba9d406cf29107efb573a","username":"lunit_qe_id","accessToken":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdW5pdF9xZV9pZCIsImF1dGgiOltdLCJpYXQiOjE2MTI0MjU2ODQsImV4cCI6MTYxMjQyOTI4NH0.qUY8aHKh36xn-TnMEQswEVB_4ZfhK79F4uO6R3_-GmkDbC-pI97_g-q4vFM6RNX4Bfu4tCx74HSyq1E_wAvXdA","refreshToken":"a5bbf99b4040430baac32e3f19db20e2"}'
     # response_body = response.json()
@@ -48,7 +49,7 @@ def test_useraccount_flow001(get_lv_baseurl):
     payload = {
         "password": new_test_pw,
         "username": new_test_id,
-        "email": new_test_id+"@lunit.io"
+        "email": new_test_email
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
@@ -59,9 +60,9 @@ def test_useraccount_flow001(get_lv_baseurl):
     # 비번변경
     headers = {"Content-Type": "application/json", "Authorization": "Bearer {}".format(access_token)}
     payload = {
-        "currentPassword": new_test_pw,
-        "newPassword": new_test_pw_chg,
-        "username": new_test_id
+        "currentPassword": new_test_pw_chg,
+        "newPassword": new_test_pw,
+        "email": new_test_email
     }
     response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
@@ -71,7 +72,7 @@ def test_useraccount_flow001(get_lv_baseurl):
     # 바뀐 비번으로 로그인
     payload = {
         "password": new_test_pw_chg,
-        "username": new_test_id
+        "email": new_test_email
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
@@ -84,7 +85,7 @@ def test_useraccount_flow001(get_lv_baseurl):
     payload = {
         "currentPassword": new_test_pw_chg,
         "newPassword": new_test_pw,
-        "username": new_test_id
+        "email": new_test_email
     }
     response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
