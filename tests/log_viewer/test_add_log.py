@@ -43,7 +43,7 @@ def test_addlog_nohostcontaineridinfo(get_lv_baseurl, get_lv_token, get_dirpath)
         "file" : ("daily{}.log".format(time_stamp), open(get_dirpath + "/log_viewer/test_resource/gw_logviewertest_dailylog.log", "rb")),
     }
 
-    response = requests.post(lv_api_url + url_manager.getloglist_api_path, files=payload, headers = headers, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
+    response = requests.post(get_lv_baseurl + url_manager.getloglist_api_path, files=payload, headers = headers, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
 
     assert response.status_code == 400
     assert '' != response.text
@@ -57,7 +57,7 @@ def test_addlog_noauth(get_lv_baseurl, get_lv_token, get_dirpath):
         "file" : ("daily{}.log".format(time_stamp), open(get_dirpath + "/log_viewer/test_resource/gw_logviewertest_dailylog.log", "rb")),
     }
 
-    response = requests.post(lv_api_url + url_manager.getloglist_api_path, files=payload, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
+    response = requests.post(get_lv_baseurl + url_manager.getloglist_api_path, files=payload, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
 
     assert response.status_code == 401
     assert '' != response.text
