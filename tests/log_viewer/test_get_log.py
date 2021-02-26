@@ -43,9 +43,9 @@ def get_logfile_idlist(get_lv_baseurl, get_lv_token):
         ##### 조회된 모든 데이터에 대해 검색 조건 반영됐는지 for 문 돌면서 확인 
         result_list.append(this_record.get('id'))
     if len(result_list) >0 :
-        raise APITestException("Not found any data")
-    else:
         return result_list
+    else:
+        raise APITestException("Not found any data")
 
 
 def test_getlog_basic(get_lv_baseurl, get_lv_token, get_logfile_idlist):
@@ -53,10 +53,67 @@ def test_getlog_basic(get_lv_baseurl, get_lv_token, get_logfile_idlist):
     """
     headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
 
-    response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path + get_logfile_idlist[0], headers = headers, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
-
+    response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path + "/"+ get_logfile_idlist[0], headers = headers, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
+    # 'https://log-collector-server-dev.lunit.io/api/v1/logs602efa5c67bd0a718525ca85'
     assert 200 == response.status_code
+    # '{"id":"602efa5c67bd0a718525ca85",
+    # "transactionId":null,
+    # "log":"[GW] [DEBUG] 2020-09-15 05:45:54,905 log:228 Internal Server Error: /cxr-v3/predictions/e373d0a5-8aee-4404-9367-f219de0e5d8b/contour.jpg",
+    # "loggedAt":"2020-09-15T05:45:54.905",
+    # "objectKey":"/tmp/tempLog/host_test_1.container_id_test_1.INFERENCE_SERVER.daily.log.2020-10-16-test.log",
+    # "host":"host_test_1",
+    # "component":"INFERENCE_SERVER",
+    # "containerId":"container_id_test_1",
+    # "logLevel":"DEBUG",
+    # "logType":"APP",
+    # "logStatus":null,
+    # "updatedAt":"2021-02-18T23:38:04.384",
+    # "createdAt":"2021-02-18T23:38:04.384"}'
     response_body = response.json()
+    assert 'id' in response_body
+    assert response_body.get('id') == get_logfile_idlist[0]
+    assert 'transactionId' in response_body
+    assert 'log' in response_body
+    assert 'loggedAt' in response_body
+    assert 'objectKey' in response_body
+    assert 'host' in response_body
+    assert 'component' in response_body
+    assert 'containerId' in response_body
+    assert 'logLevel' in response_body
+    assert 'logType' in response_body
+    assert 'logStatus' in response_body
+    assert 'updatedAt' in response_body
+    assert 'createdAt' in response_body
+
+def test_getlog_notexistid(get_lv_baseurl, get_lv_token):
+    """ 테스트 목적 : 없는 로그 아이디
+    """
+    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+
+    response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path + "/nononononono", headers = headers, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
+    # 'https://log-collector-server-dev.lunit.io/api/v1/logs602efa5c67bd0a718525ca85'
+    # assert 404 == response.status_code
+    assert response.status_code == 400
+    response_body = response.json()
+    # '{"code":"400.0001.003","message":"Not found log."}'
+    assert response_body.get('code') == "400.0001.003"
+    assert response_body.get('message') == "Not found log."
+
+
+def test_getlog_tolongid(get_lv_baseurl, get_lv_token):
+    """ 테스트 목적 : 너무 긴 값의 로그 아이디
+    """
+    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+
+    response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path + "/nononononono_nononononono_nononononono_nononononono_nononononono", headers = headers, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
+    # 'https://log-collector-server-dev.lunit.io/api/v1/logs602efa5c67bd0a718525ca85'
+    # assert 404 == response.status_code
+    assert response.status_code == 400
+    response_body = response.json()
+    # '{"code":"400.0001.003","message":"Not found log."}'
+    assert response_body.get('code') == "400.0001.003"
+    assert response_body.get('message') == "Not found log."
+
     
 
 
