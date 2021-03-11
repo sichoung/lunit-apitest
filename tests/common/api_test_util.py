@@ -25,13 +25,13 @@ def dummy_be_set(api_id, status_code, test_type, sleep_time):
         sleep_time = 0
     return dummy_set('http://10.220.150.115:7720', None, api_id, status_code, test_type, sleep_time)
 
-def dummy_cxr3_set(api_id, status_code, test_type, sleep_time):
+def dummy_is_cxr3_set(api_id, status_code, test_type, sleep_time):
     if sleep_time == None:
         sleep_time = 0
     return dummy_set('http://10.220.150.115:7711', None, api_id, status_code, test_type, sleep_time)
 
 def dummy_set(url, version, api_id, status_code, test_type, sleep_time):
-    if version == None or api_id == None or status_code == None or test_type == None: 
+    if api_id == None or status_code == None or test_type == None: 
         raise APITestException("error - required var is missing(version, api_id, status_code, test_type)")
     
     headers = {'Content-Type': 'application/json'}
@@ -46,6 +46,18 @@ def dummy_set(url, version, api_id, status_code, test_type, sleep_time):
     response = requests.post(url + "/dummy-setting", headers=headers, data=json.dumps(payload, indent=4))
     if response.status_code != 200:
         raise APITestException("Failed to set dummy-server - {}".format(response.text))
+    return True
+
+def dummy_is_cxr3_reset():
+    return dummy_reset('http://10.220.150.115:7711')
+
+def dummy_reset(url):
+    # try:
+    response = requests.get(url + "/dummy-reset")
+    if response.status_code != 200:
+        raise APITestException("Failed to set dummy-server - {}".format(response.text))
+    # except Exception:
+    #     raise APITestException("Failed to set dummy-server")
     return True
 
 def open_json_file(filepath):

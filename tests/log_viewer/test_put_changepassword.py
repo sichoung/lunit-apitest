@@ -9,10 +9,10 @@ from common import api_test_util as util
 from common.exceptions import APITestException
 from common.api_constants import LogViewerConstants as url_manager
 
-new_test_id = "test01"
-new_test_email = "test01@lunit.io"
-new_test_pw = "test01"
-new_test_pw_chg = "test01_chg"
+#new_test_id = "test01"
+new_test_email = "test02@lunit.io"
+new_test_pw = "1q2w3e4r%t"
+new_test_pw_chg = "1q2w3e4r%t_chg"
 
 @pytest.fixture(scope="module")
 def get_testuser_token(get_lv_baseurl):
@@ -20,7 +20,7 @@ def get_testuser_token(get_lv_baseurl):
     headers = {"Content-Type": "application/json"}
     payload = {
         "password": new_test_pw,
-        "username": new_test_id,
+        "username": "api test user",
         "email": new_test_email
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
@@ -34,7 +34,7 @@ def get_testuser_token(get_lv_baseurl):
         payload = {
             "email": new_test_email,
             "password": new_test_pw,
-            "username": new_test_id
+            "username": "api test user"
         }
         response = requests.post(get_lv_baseurl + url_manager.signup_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
         if response.status_code == 200: 
@@ -79,6 +79,22 @@ def test_changepwd_basic(get_lv_baseurl, get_testuser_token):
     assert 200 == response.status_code
     response_body = response.json()
     assert True == response_body.get("isChanged")    
+
+def test_changepwd_invalidnewpassword(get_lv_baseurl, get_testuser_token):
+    """ 테스트 목적 : 기준을 만족하지 못하는 신규비밀번호 
+    """
+    # 비번변경
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer {}".format(get_testuser_token)}
+    payload = {
+        "currentPassword": new_test_pw,
+        "newPassword": "test",
+        "email": new_test_email
+    }
+    response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    assert 400 == response.status_code 
+    response_body = response.json()
+    assert response_body.get("code") == "400.1000.001"
+    assert response_body.get("message") == "Invalid password. Password not correct."
 
 
 def test_changepwd_differentusertoken(get_lv_baseurl):
