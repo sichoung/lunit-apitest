@@ -151,9 +151,33 @@ def test_useraccount_flow001(get_lv_baseurl):
     assert 200 == response.status_code
     response_body = response.json()
     assert True == response_body.get("isVerify")
+
+
+# def test_useraccount_flow001(get_lv_baseurl):
+#     add_user(get_lv_baseurl)
+
+
+# def add_user(get_lv_baseurl):
+#     headers = {"Content-Type": "application/json"}
+#     # payload = {
+#     #     "email": "qe_test@lunit.io",
+#     #     "password": "1q2w3e4r%t",
+#     #     "username": "qe01"
+#     # }
+
+#     payload = {
+#         "email": url_manager.test_email,
+#         "password": url_manager.test_pw,
+#         "username": url_manager.test_name
+#     }
     
-
-
+#     response = requests.post(get_lv_baseurl + url_manager.signup_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+#     if response.status_code == 200:
+#         print("200! success")
+#         print(response.text)
+#     else: 
+#         print("fail! -"+response.status_code)
+#         print(response.text)
 
 
 

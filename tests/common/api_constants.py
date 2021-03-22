@@ -13,6 +13,7 @@ class LogViewerConstants():
     getcomponent_api_path = "/api/v1/commons/components"
     getloglevel_api_path = "/api/v1/commons/log-level"
     getlogtype_api_path = "/api/v1/commons/log-types"
+    getlogstatus_api_path = "/api/v1/commons/log-status"
 
     #### LOGS ####
     getloglist_api_path = "/api/v1/logs"
@@ -20,13 +21,19 @@ class LogViewerConstants():
     logdownload_api_path = "/api/v1/logs/download"
 
     #### ACCOUNT ####
-    test_email = "test@lunit.io"
-    test_pw = "test"
+    test_email = "qe_test1@lunit.io"
+    test_pw = "1q2w3e4r%t"
     test_name = "apitest user"
+#     test_name = "apitest user"
+# test_email = "qe_test@lunit.io"
+# test_pw = "1q2w3e4r%t"
 
 
-# class BackendConstants():
-
+class BEConstants():
+    getcomponent_api_path = "/api/v1/commons/components"
+    getloglevel_api_path = "/api/v1/commons/log-level"
+    getlogtype_api_path = "/api/v1/commons/log-types"
+    getlogstatus_api_path = "/api/v1/commons/log-status"
 # class InferenceServerConstants():
 
 

@@ -8,15 +8,15 @@ import json, time
 from common import api_test_util as util
 from common.api_constants import LogViewerConstants as url_manager
 
-test_name = "apitest user"
-test_email = "test@lunit.io"
-test_pw = "test"
+# test_name = "apitest user"
+# test_email = "qe_test@lunit.io"
+# test_pw = "1q2w3e4r%t"
 
 def test_login_basic(get_lv_baseurl):
     headers = {"Content-Type": "application/json"}
     payload = {
-        "email": test_email,
-        "password": test_pw
+        "email": url_manager.test_email,
+        "password": url_manager.test_pw
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
@@ -34,8 +34,8 @@ def test_login_basic(get_lv_baseurl):
 def test_login_twice(get_lv_baseurl):
     headers = {"Content-Type": "application/json"}
     payload = {
-        "email": test_email,
-        "password": test_pw
+        "email": url_manager.test_email,
+        "password": url_manager.test_pw
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
@@ -53,33 +53,39 @@ def test_login_notexistid(get_lv_baseurl):
     headers = {"Content-Type": "application/json"}
     payload = {
         "email": "not_exist_emaillll",
-        "password": test_pw
+        "password": url_manager.test_pw
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 401 == response.status_code
     # '{"code":"500.0001.0005","message":"Invalid Credentials"}'
     response_body = response.json()
-    assert "401.1000.002" == response_body.get("code")
-    assert "Log in failed. Username or password not correct." == response_body.get("message")
+    assert "401.1000.001" == response_body.get("code")
+    assert "Invalid credential. Email or password not correct." == response_body.get("message")
+    assert "failureCount" in response_body
+    assert "lockoutCount" in response_body
+    assert "coolOffSeconds" in response_body
 
 def test_login_wrongpw(get_lv_baseurl):
     headers = {"Content-Type": "application/json"}
     payload = {
-        "email": test_email,
+        "email": url_manager.test_email,
         "password": "wrong$(!_L:pw"
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 401 == response.status_code
     # '{"code":"403.1000.001","message":"User not found."}'
     response_body = response.json()
-    assert "401.1000.002" == response_body.get("code")
-    assert "Log in failed. Username or password not correct." == response_body.get("message")
+    assert "401.1000.001" == response_body.get("code")
+    assert "Invalid credential. Email or password not correct." == response_body.get("message")
+    assert "failureCount" in response_body
+    assert "lockoutCount" in response_body
+    assert "coolOffSeconds" in response_body
     
 def test_login_norequiredfield(get_lv_baseurl):
     headers = {"Content-Type": "application/json"}
     payload = {
         # "password": test_id,
-        "password": test_pw
+        "password": url_manager.test_pw
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 400 == response.status_code
@@ -92,7 +98,7 @@ def test_login_failmorethan3times(get_lv_baseurl):
     # fail#1 
     headers = {"Content-Type": "application/json"}
     payload = {
-        "email": test_email,
+        "email": url_manager.test_email,
         "password": "wrong_pwwww"
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
@@ -112,8 +118,8 @@ def test_login_failmorethan3times(get_lv_baseurl):
 
     # try right id, pw
     payload = {
-        "email": test_email,
-        "password": test_pw
+        "email": url_manager.test_email,
+        "password": url_manager.test_pw
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     print(response.status_code)
@@ -122,8 +128,8 @@ def test_login_failmorethan3times(get_lv_baseurl):
     # wait 61sec, try right id, pw
     time.sleep(62)
     payload = {
-        "email": test_email,
-        "password": test_pw
+        "email": url_manager.test_email,
+        "password": url_manager.test_pw
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     print(response.status_code)
@@ -136,9 +142,9 @@ def temp_add_test_account():
     target_url = "https://log-collector-server-dev.lunit.io"
     headers = {"Content-Type": "application/json"}
     payload = {
-        "email": test_email,
-        "password": test_pw,
-        "username": test_name
+        "email": url_manager.test_email,
+        "password": url_manager.test_pw,
+        "username": url_manager.test_name
     }
     response = requests.post(target_url + url_manager.signup_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     if response.status_code == 200:

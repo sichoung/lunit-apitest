@@ -9,10 +9,10 @@ from common.exceptions import APITestException
 
 this_api_path = '/cxr-v3/models/latest/predict/'
 
-def test_predict_200ok(get_be_baseurl, get_apikey, get_dicom_uuid):
+def test_predict_200ok(get_be_baseurl, get_be_apikey, get_dicom_uuid):
     test_uuid = get_dicom_uuid
     test_threshold_value = 0.25
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_apikey}
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_be_apikey}
     payload = {
         "case": [
             {
@@ -66,7 +66,7 @@ def test_predict_200ok(get_be_baseurl, get_apikey, get_dicom_uuid):
     # "created_at":"2021-02-01T16:55:29.321352+09:00"}'
 
 
-def test_predict_dupuuid(get_be_baseurl, get_apikey, get_dicom_uuid):
+def test_predict_dupuuid(get_be_baseurl, get_be_apikey, get_dicom_uuid):
     """ 동일 uuid에 대해 2번 분석 시도 """
     test_uuid = get_dicom_uuid
     headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_apikey}
@@ -99,8 +99,8 @@ def test_predict_dupuuid(get_be_baseurl, get_apikey, get_dicom_uuid):
     assert "inference_model" in response_body
 
 
-def test_predict_bodynocase(get_be_baseurl, get_apikey):
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_apikey}
+def test_predict_bodynocase(get_be_baseurl, get_be_apikey):
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_be_apikey}
     payload = {
         # "case": [
         #     {
@@ -121,10 +121,10 @@ def test_predict_bodynocase(get_be_baseurl, get_apikey):
     assert "case: This field is required." == response_body.get("message")
     assert "400.50.ISTBE.004" == response_body.get("insight_error_code")
 
-def test_predict_bodynoparameters(get_be_baseurl, get_apikey, get_dicom_uuid):
+def test_predict_bodynoparameters(get_be_baseurl, get_be_apikey, get_dicom_uuid):
     """ when no threshold, filtering, checking default value and beviour """
     test_uuid = get_dicom_uuid
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_apikey}
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_be_apikey}
     payload = {
         "case": [
             {
@@ -174,10 +174,10 @@ def test_predict_bodynoparameters(get_be_baseurl, get_apikey, get_dicom_uuid):
     assert "created_at" in response_body
 
 @pytest.mark.skip(reason="filtering 설정하는 방법 파악 후 설정")
-def test_predict_filteringon(get_be_baseurl, get_apikey, get_dicom_uuid):
+def test_predict_filteringon(get_be_baseurl, get_be_apikey, get_dicom_uuid):
     """ 필터링 True했을 때 동작 확인. ToDo 필터링하는 값을 따로 줘야할것 같은데?  """
     test_uuid = get_dicom_uuid
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_apikey}
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_be_apikey}
     payload = {
         "case": [
             {
@@ -215,7 +215,7 @@ def test_predict_filteringon(get_be_baseurl, get_apikey, get_dicom_uuid):
     assert "view_name" in first_case
 
 
-def test_predict_invalidapikey(get_be_baseurl, get_apikey, get_dicom_uuid):
+def test_predict_invalidapikey(get_be_baseurl, get_be_apikey, get_dicom_uuid):
     test_uuid = get_dicom_uuid
     headers = {"Content-Type": "application/json", "Authorization": "Bearer "+ "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiYWI4NzVkYS03ZWUxLTRmYzYtOTNiOC1mZWIxZDIwY2E5NzUiLCJpc3MiOiJMdW5pdCIsImlhdCI6MTYwNjExMjc4MCwiZXhwIjoxNjEzODg4NzgwLCJuYmYiOjE2MDYxMTI3ODAsImF1ZCI6Imh0dHBzOi8vaW5zaWdodC5sdW5pdC5pbyIsImRhdGEiOnsiY291bnRyeV9pZCI6MSwiY291bnRyeV9uYW1lIjoiQWZnaGFuaXN0YW4ifX0.XEmOg5ZBZiHyzhcZJRuu12J-_VxyGfbvVPWygee23qc"}
     payload = {

@@ -14,12 +14,12 @@ BE_PREDICT_APIPATH = "/cxr-v3/models/latest/predict/"
 BE_REPORT_APIPATH = "/cxr-v3/predictions/{predict_uuid}/report"
 
 # @integration
-def test_intg_001(get_be_baseurl, get_dirpath, get_apikey):
+def test_intg_001(get_be_baseurl, get_dirpath, get_be_apikey):
     """ upload, predict, report flow testing with thresould 0.25 """
     test_threshold_value = 0.25
 
     # 1) upload
-    headers = {"Authorization": "Bearer "+get_apikey}
+    headers = {"Authorization": "Bearer "+get_be_apikey}
     values = {"file": ("normal.dcm", open(get_dirpath+"/be/normal.dcm", "rb"))}
     response = requests.post(get_be_baseurl + BE_UPLOAD_APIPATH, files=values, headers=headers)
     assert 201 == response.status_code
@@ -29,7 +29,7 @@ def test_intg_001(get_be_baseurl, get_dirpath, get_apikey):
     dicom_uuid = response_body["uuid"]
 
     # 2) predict
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_apikey}
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_be_apikey}
     payload = {
         "case": [
             {
@@ -54,7 +54,7 @@ def test_intg_001(get_be_baseurl, get_dirpath, get_apikey):
     assert False == response_body.get("filtering")
 
     # 3) report
-    headers = {"Authorization": "Bearer "+get_apikey}
+    headers = {"Authorization": "Bearer "+get_be_apikey}
     params = {"lesion_names":"atelectasis,calcification,cardiomegaly,consolidation,fibrosis,mediastinal_widening,nodule,pleural_effusion,pneumoperitoneum,pneumothorax"}
     response = requests.get(get_be_baseurl + BE_REPORT_APIPATH.format(predict_uuid = predict_uuid), params = params, headers=headers)
 
@@ -74,7 +74,7 @@ def test_intg_001(get_be_baseurl, get_dirpath, get_apikey):
     assert "cardiomegaly" in report_info
 
 @pytest.mark.skip(reason="This chages DB info. it is risky. Do not run")
-def test_intg_002(get_be_baseurl, get_dirpath, get_apikey):
+def test_intg_002(get_be_baseurl, get_dirpath, get_be_apikey):
     """ 동적으로 더미서버 IS 연동 변경 테스트. upload 후 predict할 때 IS에 임의의 에러가 나도록 한후 BE의 동작 확인   """
     test_threshold_value = 0.25
 
@@ -83,7 +83,7 @@ def test_intg_002(get_be_baseurl, get_dirpath, get_apikey):
     # get_apikey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4YzNiZDk5Yi0wMzhlLTQ5ZGQtODZkNi02ZjFiYjRlNDAxMzEiLCJpc3MiOiJMdW5pdCIsImlhdCI6MTYxMjQwNDQ1OCwiZXhwIjoxNjIwMTgwNDU4LCJuYmYiOjE2MTI0MDQ0NTgsImF1ZCI6Imh0dHBzOi8vaW5zaWdodC5sdW5pdC5pbyIsImRhdGEiOnsiY291bnRyeV9pZCI6MSwiY291bnRyeV9uYW1lIjoiQWZnaGFuaXN0YW4ifX0.VqoOpdPWDAa8FdJ4pdUuqnTf-PK6cprgBi5lANxgD4Q"
     
     # 1) upload
-    headers = {"Authorization": "Bearer "+get_apikey}
+    headers = {"Authorization": "Bearer "+get_be_apikey}
     values = {"file": ("normal.dcm", open(get_dirpath+"/be/normal.dcm", "rb"))}
     response = requests.post(get_be_baseurl + BE_UPLOAD_APIPATH, files=values, headers=headers)
     assert 201 == response.status_code
@@ -102,7 +102,7 @@ def test_intg_002(get_be_baseurl, get_dirpath, get_apikey):
     util.dummy_is_cxr3_reset()
 
     # 2) predict
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_apikey}
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer "+get_be_apikey}
     payload = {
         "case": [
             {

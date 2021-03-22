@@ -10,8 +10,8 @@ from common.exceptions import APITestException
 from common.api_constants import LogViewerConstants as url_manager
 
 
-test_email = "test@lunit.io"
-test_pw = "test"
+test_email = url_manager.test_email
+test_pw = url_manager.test_pw
 
 def test_refreshtoken_basic(get_lv_baseurl):
     # 1)로그인
@@ -23,7 +23,7 @@ def test_refreshtoken_basic(get_lv_baseurl):
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert response.status_code == 200
     response_body = response.json()
-    access_token = response_body.get("accessToken")
+    first_access_token = response_body.get("accessToken")
     refresh_token = response_body.get("refreshToken")
     # 2) 리프레시 
     # headers = {"Content-Type": "application/json", "Authorization": "Bearer {}".format(access_token)}
@@ -38,10 +38,13 @@ def test_refreshtoken_basic(get_lv_baseurl):
     new_refresh_token = response_body.get("refreshToken")
     assert new_access_token != None
     assert new_refresh_token != None
+    assert first_access_token != new_access_token
 
     # 3) 이전 accessToken verify
-    old_token_verify = verify_token(get_lv_baseurl + url_manager.verifytkn_api_path, access_token)
-    assert old_token_verify == False
+    old_token_verify = verify_token(get_lv_baseurl + url_manager.verifytkn_api_path, first_access_token)
+    new_token_verify = verify_token(get_lv_baseurl + url_manager.verifytkn_api_path, new_access_token)
+    assert old_token_verify == False, "old token should be invalid, but was verify returned 'True'"
+    assert new_token_verify == True
 
 
 def test_refreshtoken_invalidrefreshtoken(get_lv_baseurl):
