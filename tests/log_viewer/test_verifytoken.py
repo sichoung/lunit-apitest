@@ -8,8 +8,8 @@ import json, time
 from common import api_test_util as util
 from common.api_constants import LogViewerConstants as url_manager
 
-test_email = "test@lunit.io"
-test_pw = "test"
+test_email = url_manager.test_email
+test_pw = url_manager.test_pw
 
 def test_verifytoken_basic(get_lv_baseurl, get_lv_token):
     get_lv_token = get_lv_token(test_email, test_pw)
@@ -42,7 +42,7 @@ def test_verifytoken_invalidbody(get_lv_baseurl, get_lv_token):
     }
     response = requests.post(get_lv_baseurl + url_manager.verifytkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 400 == response.status_code
-    assert '' != response.text
+    assert '' != response.text, "400 Bad Request에서 응답바디 내용이 존재하지 않음"
     # response_body = response.json()
     # TODO check body message 
 

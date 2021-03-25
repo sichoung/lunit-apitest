@@ -55,7 +55,7 @@ def test_logdownload_notexistlogid(get_lv_baseurl, get_lv_token):
     response = requests.post(get_lv_baseurl + url_manager.logdownload_api_path, headers=headers, data=json.dumps(payload,indent=4), verify = False)
     assert response.status_code == 200
     # 데이터 없는 경우 헤더 데이터만 반환
-    assert '"id","transactionId","log","loggedAt","objectKey","host","component","containerId","logLevel","logType","logStatus","updatedAt","createdAt"\n' == response.text
+    assert '"id","transactionId","log","loggedAt","host","component","logLevel","logType","logStatus","createdAt"\n'== response.text
     
 def test_logdownload_notexistlogid2(get_lv_baseurl, get_lv_token, get_logfile_idlist):
     """ 테스트 목적 : 3건의 id 중 가운데 하나의 id 값이 없는 값일때 다운로드 테스트 - 200ok, 유효한 2건의 데이터 반환

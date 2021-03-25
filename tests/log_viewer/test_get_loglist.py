@@ -74,8 +74,8 @@ def test_get_loglist_default_200(get_lv_baseurl, get_lv_token):
 def test_get_loglist_search_200(get_lv_baseurl, get_lv_token):
     """ 테스트 목적 : 여러 검색 조건을 복합적으로 적용하여 조회 후 조회 결과에 반영되었는지 확인
     """
-    search_component = "IS" # INFERENCE_SERVER / GATEWAY / INSIGHT_BACKEND_CXR / INSIGHT_BACKEND_MMG
-    search_keyword = "Server Error"
+    search_component = "GW" # GW / IS / BE
+    # search_keyword = "Exclude"
     search_loglevel = "DEBUG" # DEBUG / ERROR / FATAL 
     search_logtype = "APP"
     search_pagesize = 10
@@ -83,7 +83,7 @@ def test_get_loglist_search_200(get_lv_baseurl, get_lv_token):
     headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
     params = {
         'components': search_component, 
-        'keyword': search_keyword, 
+        # 'keyword': search_keyword, 
         'logLevels': search_loglevel, 
         'logTypes': search_logtype, 
         'page': 0, 
@@ -111,10 +111,10 @@ def test_get_loglist_search_200(get_lv_baseurl, get_lv_token):
     assert len(contents_element) > 0    # 결과 데이터가 없으면 실패할 수 있음 
     for this_record in contents_element:
         ##### 조회된 모든 데이터에 대해 검색 조건 반영됐는지 for 문 돌면서 확인 
-        assert this_record.get('component') == "IS"
-        assert "Server Error" in this_record.get('log')
-        assert this_record.get('logLevel')== "DEBUG"
-        assert this_record.get('logType')== "APP"
+        assert this_record.get('component') == search_component
+        # assert "Server Error" in this_record.get('log')
+        assert this_record.get('logLevel')== search_loglevel
+        assert this_record.get('logType')== search_logtype
 
 def test_get_loglist_nodata(get_lv_baseurl, get_lv_token):
     """ 테스트 목적 : 조회 결과가 없을 때 응답이 어떻게 오는지 확인
@@ -176,9 +176,9 @@ def test_get_loglist_paging(get_lv_baseurl, get_lv_token):
 def test_get_loglist_search_capitalkeyword(get_lv_baseurl, get_lv_token):
     """ 테스트 목적 : Server Error 텍스트에 대해 키워드 검색 대문자 SERVER ERROR로 검색이 되는지 확인 
     """
-    search_uppercase_keyword = "SERVER ERROR" # find 'Server Error' log text with 'SERVER ERROR' uppercase keyword
+    search_uppercase_keyword = "TRY" # find 'Server Error' log text with 'SERVER ERROR' uppercase keyword
 
-    search_component = "IS" # INFERENCE_SERVER / GATEWAY / INSIGHT_BACKEND_CXR / INSIGHT_BACKEND_MMG
+    search_component = "GW" 
     search_loglevel = "DEBUG" # DEBUG / ERROR / FATAL 
     search_logtype = "APP"
 
@@ -198,22 +198,22 @@ def test_get_loglist_search_capitalkeyword(get_lv_baseurl, get_lv_token):
     contents_element = response_body.get("content")
     assert len(contents_element) > 0    # 결과 데이터가 없으면 실패할 수 있음 
     for this_record in contents_element:
-        assert "Server Error" in this_record.get('log')
+        assert "Try" in this_record.get('log')
 
 # @pytest.mark.skip(reason="not yet find valid date format")
 def test_get_loglist_daterangesearch(get_lv_baseurl, get_lv_token):
     """ 테스트 목적 : 날짜 범위로 검색 
     """
     search_startdate = "2020-09-15 05:45" # '2020-09-15T05:45:54.905'
-    search_enddate = "2020-09-15 05:45"
-    search_keyword = "error"
+    search_enddate = "2021-06-30 05:45"
+    # search_keyword = "try"
 
     headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
     params = {
         # startDate, endDate, 
         'startDate': search_startdate, 
         'endDate': search_enddate,
-        'keyword': search_keyword, 
+        # 'keyword': search_keyword, 
         'page': 0
         }
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, params=params, verify = False)
@@ -223,8 +223,8 @@ def test_get_loglist_daterangesearch(get_lv_baseurl, get_lv_token):
     assert response_body.get("content") != None
     contents_element = response_body.get("content")
     assert len(contents_element) > 0    # 결과 데이터가 없으면 실패할 수 있음 
-    for this_record in contents_element:
-        assert "rror" in this_record.get('log')
+    # for this_record in contents_element:
+    #     assert "rror" in this_record.get('log')
 
 def test_get_loglist_switcheddaterange(get_lv_baseurl, get_lv_token):
     """ 테스트 목적 : 날짜 범위 앞뒤 선후관계가 바뀐 상태로 검색 요청
@@ -275,7 +275,6 @@ def test_get_loglist_wrongcomponenttype(get_lv_baseurl, get_lv_token):
     """
     wrong_component = "invalid_COMPONENT"
 
-    search_keyword = "Server Error"
     search_loglevel = "DEBUG" # DEBUG / ERROR / FATAL 
     search_logtype = "APP"
     search_pagesize = 10
@@ -283,7 +282,6 @@ def test_get_loglist_wrongcomponenttype(get_lv_baseurl, get_lv_token):
     headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
     params = {
         'components': wrong_component, 
-        'keyword': search_keyword, 
         'logLevels': search_loglevel, 
         'logTypes': search_logtype, 
         'page': 0, 

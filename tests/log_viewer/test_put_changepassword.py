@@ -119,9 +119,10 @@ def test_changepwd_differentusertoken(get_lv_baseurl):
         "email": new_test_email
     }
     response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
-    assert 400 == response.status_code #'{"code":"400.1000.001","message":"Invalid password. Password not correct."}'
+    assert 401 == response.status_code #'{"code":"401.1000.001","message":"Invalid password. Password not correct."}'
     response_body = response.json()
-    assert True == response_body.get("isChanged")
+    assert "Invalid credential. Email or password not correct." == response_body.get("message")
+
 
 def test_changepwd_invalcurrentpw(get_lv_baseurl, get_testuser_token):
     """ 테스트 목적 : 틀린 현재비밀번호 
@@ -134,36 +135,22 @@ def test_changepwd_invalcurrentpw(get_lv_baseurl, get_testuser_token):
         "email": new_test_email
     }
     response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
-    assert 200 == response.status_code #'{"code":"400.1000.001","message":"Invalid password. Password not correct."}'
+    assert 401 == response.status_code #'{"code":"401.1000.001","message":"Invalid password. Password not correct."}'
     response_body = response.json()
-    assert True == response_body.get("isChanged")
+    assert "Invalid credential. Email or password not correct." == response_body.get("message")
 
 def test_changepwd_samepw(get_lv_baseurl,get_testuser_token):
     """ 테스트 목적 : current, new 같은 비번
     """
     headers = {"Content-Type": "application/json", "Authorization": "Bearer {}".format(get_testuser_token)}
     payload = {
-        "currentPassword": "wrong_pw#!(OAKFLA",
-        "newPassword": new_test_pw_chg,
+        "currentPassword": new_test_pw,
+        "newPassword": new_test_pw,
         "email": new_test_email
     }
     response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
-    assert 200 == response.status_code #'{"code":"400.1000.001","message":"Invalid password. Password not correct."}'
+    assert 400 == response.status_code #'{"code":"400.1000.001","message":"Invalid password. Password not correct."}'
     response_body = response.json()
-    assert True == response_body.get("isChanged")
+    assert "not yet defined" == response_body.get("message")
 
-
-def test_changepwd_nouser(get_lv_baseurl, get_testuser_token):
-    """ 테스트 목적 : 존재하지 않는 사용자(email) 에 대한 비번변경 시도 
-    """
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer {}".format(get_testuser_token)}
-    payload = {
-        "currentPassword": new_test_pw,
-        "newPassword": new_test_pw_chg,
-        "email": "not_existtt@lunit.io"
-    }
-    response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
-    assert 200 == response.status_code #'{"code":"400.1000.001","message":"Invalid password. Password not correct."}'
-    response_body = response.json()
-    assert True == response_body.get("isChanged")
 
