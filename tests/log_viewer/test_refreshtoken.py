@@ -38,13 +38,16 @@ def test_refreshtoken_basic(get_lv_baseurl):
     new_refresh_token = response_body.get("refreshToken")
     assert new_access_token != None
     assert new_refresh_token != None
-    assert first_access_token != new_access_token
+    assert first_access_token != new_access_token, "리프레시 된 access_token이 기존 access_token 값과 동일합니다!"
 
     # 3) 이전 accessToken verify
     old_token_verify = verify_token(get_lv_baseurl + url_manager.verifytkn_api_path, first_access_token)
     new_token_verify = verify_token(get_lv_baseurl + url_manager.verifytkn_api_path, new_access_token)
-    assert old_token_verify == False, "old token should be invalid, but was verify returned 'True'"
+    # 2021.03.23 요건 추가 확인. 
+    assert old_token_verify == True, "old token should be invalid, but was verify returned 'True'"
     assert new_token_verify == True
+    time.sleep(80)
+    assert old_token_verify == False, "old token should be invalid, but was verify returned 'True'"
 
 
 def test_refreshtoken_invalidrefreshtoken(get_lv_baseurl):

@@ -10,9 +10,9 @@ from common.exceptions import APITestException
 from common.api_constants import LogViewerConstants as url_manager
 
 #new_test_id = "test01"
-new_test_email = "test02@lunit.io"
-new_test_pw = "1q2w3e4r%t"
-new_test_pw_chg = "1q2w3e4r%t_chg"
+new_test_email = "test04@lunit.io"
+new_test_pw = "fnsltakstp123!"
+new_test_pw_chg = "fnsltakstp123!_chg"
 
 @pytest.fixture(scope="module")
 def get_testuser_token(get_lv_baseurl):
@@ -41,7 +41,7 @@ def get_testuser_token(get_lv_baseurl):
             response_body = response.json()
             return response_body.get("accessToken")
         else: 
-            raise APITestException("Failed to prepare test user (add new user)- "+response.status_code)
+            raise APITestException("Failed to prepare test user (add new user)- "+str(response.status_code))
     
 def test_changepwd_basic(get_lv_baseurl, get_testuser_token):
     """ 테스트 목적 : 비번변경 기본 
@@ -119,7 +119,7 @@ def test_changepwd_differentusertoken(get_lv_baseurl):
         "email": new_test_email
     }
     response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
-    assert 200 == response.status_code #'{"code":"400.1000.001","message":"Invalid password. Password not correct."}'
+    assert 400 == response.status_code #'{"code":"400.1000.001","message":"Invalid password. Password not correct."}'
     response_body = response.json()
     assert True == response_body.get("isChanged")
 
