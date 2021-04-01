@@ -217,7 +217,7 @@ def test_get_loglist_daterangesearch(get_lv_baseurl, get_lv_token):
         'page': 0
         }
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, params=params, verify = False)
-    assert response.status_code == 200
+    assert 200 == response.status_code
     
     response_body = response.json()
     assert response_body.get("content") != None
@@ -242,7 +242,7 @@ def test_get_loglist_switcheddaterange(get_lv_baseurl, get_lv_token):
         'page': 0
         }
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, params=params, verify = False)
-    assert response.status_code == 200
+    assert 400 == response.status_code
     
     response_body = response.json()
     assert response_body.get("content") != None
@@ -265,7 +265,7 @@ def test_get_loglist_invalid_dateformat(get_lv_baseurl, get_lv_token):
         'page': 0
         }
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, params=params, verify = False)
-    assert response.status_code == 400 # failing. 500 returning
+    assert 400 == response.status_code # failing. 500 returning
     response_body = response.json()
     assert response_body.get("code") == "500.0001.0005"
     assert response_body.get("message") == "Text '2020-09-15T' could not be parsed at index 10"
@@ -289,7 +289,7 @@ def test_get_loglist_wrongcomponenttype(get_lv_baseurl, get_lv_token):
         'sort': 'loggedAt'
         }
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, params=params, verify = False)
-    assert response.status_code == 400
+    assert 400 == response.status_code
     response_body = response.json()
     assert response_body.get("code") == "500.0001.0005"
     assert response_body.get("message") == "Failed to convert value of type 'java.lang.String' to required type 'java.util.List'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [io.lunit.log.collector.server.code.Component] for value 'invalid_COMPONENT'; nested exception is java.lang.IllegalArgumentException: No enum constant io.lunit.log.collector.server.code.Component.invalid_COMPONENT"
@@ -317,7 +317,7 @@ def test_get_loglist_wrongloglevel(get_lv_baseurl, get_lv_token):
     # components, startDate, endDate, 
     # keyword, logLevels, logStatus, logTypes, page, size, sort
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, params=params, verify = False)
-    assert response.status_code == 400
+    assert 400 == response.status_code
     response_body = response.json()
     assert response_body.get("code") == "500.0001.0005"
     assert response_body.get("message") == "Failed to convert value of type 'java.lang.String' to required type 'java.util.List'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [io.lunit.log.collector.server.code.LogLevel] for value 'invaliddddd'; nested exception is java.lang.IllegalArgumentException: No enum constant io.lunit.log.collector.server.code.LogLevel.invaliddddd"
@@ -345,7 +345,7 @@ def test_get_loglist_wronglogtype(get_lv_baseurl, get_lv_token):
     # components, startDate, endDate, 
     # keyword, logLevels, logStatus, logTypes, page, size, sort
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, params=params, verify = False)
-    assert response.status_code == 400
+    assert 400 == response.status_code
     response_body = response.json()
     assert response_body.get("code") == "500.0001.0005"
     assert response_body.get("message") == "Failed to convert value of type 'java.lang.String' to required type 'java.util.List'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [io.lunit.log.collector.server.code.LogType] for value 'INVAL'; nested exception is java.lang.IllegalArgumentException: No enum constant io.lunit.log.collector.server.code.LogType.INVAL"
@@ -355,7 +355,7 @@ def test_get_loglist_notauth(get_lv_baseurl):
     """
     # headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
-    assert response.status_code == 401
+    assert 401 == response.status_code
     assert response.text == ''  # 401일때 응답 바디가 없음 
     # response_body = response.json()
 

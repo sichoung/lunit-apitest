@@ -89,9 +89,8 @@ def test_getlog_notexistid(get_lv_baseurl, get_lv_token):
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path + "/nononononono", headers = headers, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
     # 'https://log-collector-server-dev.lunit.io/api/v1/logs602efa5c67bd0a718525ca85'
     # assert 404 == response.status_code
-    assert response.status_code == 400
+    assert 400 == response.status_code
     response_body = response.json()
-    # '{"code":"400.0001.003","message":"Not found log."}'
     assert response_body.get('code') == "400.0001.003"
     assert response_body.get('message') == "Not found log."
 
@@ -104,7 +103,7 @@ def test_getlog_tolongid(get_lv_baseurl, get_lv_token):
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path + "/nononononono_nononononono_nononononono_nononononono_nononononono", headers = headers, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
     # 'https://log-collector-server-dev.lunit.io/api/v1/logs602efa5c67bd0a718525ca85'
     # assert 404 == response.status_code
-    assert response.status_code == 400
+    assert 400 == response.status_code
     response_body = response.json()
     # '{"code":"400.0001.003","message":"Not found log."}'
     assert response_body.get('code') == "400.0001.003"
