@@ -14,6 +14,7 @@ class LogViewerConstants():
     getloglevel_api_path = "/api/v1/commons/log-level"
     getlogtype_api_path = "/api/v1/commons/log-types"
     getlogstatus_api_path = "/api/v1/commons/log-status"
+    getservicehost_api_path = "/api/v1/hosts"
 
     #### LOGS ####
     getloglist_api_path = "/api/v1/logs"

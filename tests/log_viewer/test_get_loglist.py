@@ -245,11 +245,10 @@ def test_get_loglist_switcheddaterange(get_lv_baseurl, get_lv_token):
     assert 400 == response.status_code
     
     response_body = response.json()
-    assert response_body.get("content") != None
-    contents_element = response_body.get("content")
-    assert len(contents_element) > 0    # 결과 데이터가 없으면 실패할 수 있음 
-    for this_record in contents_element:
-        assert "rror" in this_record.get('log')
+    # {'code': '400.0001.002', 'message': 'Invalid date.'}.
+
+    assert "400.0001.002" == response_body.get("code")
+    assert "Invalid date." == response_body.get("message")
 
 def test_get_loglist_invalid_dateformat(get_lv_baseurl, get_lv_token):
     """ 테스트 목적 : invalid format - 날짜 형태에 2020-09-15T 입력했을 때 응답 확인
@@ -267,8 +266,11 @@ def test_get_loglist_invalid_dateformat(get_lv_baseurl, get_lv_token):
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, params=params, verify = False)
     assert 400 == response.status_code # failing. 500 returning
     response_body = response.json()
-    assert response_body.get("code") == "500.0001.0005"
-    assert response_body.get("message") == "Text '2020-09-15T' could not be parsed at index 10"
+
+    assert "400.0001.002" == response_body.get("code")
+    assert "Invalid date." == response_body.get("message")
+    # assert response_body.get("code") == "500.0001.0005"
+    # assert response_body.get("message") == "Text '2020-09-15T' could not be parsed at index 10"
 
 def test_get_loglist_wrongcomponenttype(get_lv_baseurl, get_lv_token):
     """ 테스트 목적 : invalid_COMPONENT
@@ -347,8 +349,8 @@ def test_get_loglist_wronglogtype(get_lv_baseurl, get_lv_token):
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, params=params, verify = False)
     assert 400 == response.status_code
     response_body = response.json()
-    assert response_body.get("code") == "500.0001.0005"
-    assert response_body.get("message") == "Failed to convert value of type 'java.lang.String' to required type 'java.util.List'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [io.lunit.log.collector.server.code.LogType] for value 'INVAL'; nested exception is java.lang.IllegalArgumentException: No enum constant io.lunit.log.collector.server.code.LogType.INVAL"
+    assert "500.0001.0005" == response_body.get("code")
+    # assert response_body.get("message") == "Failed to convert value of type 'java.lang.String' to required type 'java.util.List'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [io.lunit.log.collector.server.code.LogType] for value 'INVAL'; nested exception is java.lang.IllegalArgumentException: No enum constant io.lunit.log.collector.server.code.LogType.INVAL"
 
 def test_get_loglist_notauth(get_lv_baseurl):
     """ 테스트 목적 : 인증토큰 없이 로그 조회 시도 
@@ -356,7 +358,10 @@ def test_get_loglist_notauth(get_lv_baseurl):
     # headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
     assert 401 == response.status_code
-    assert response.text == ''  # 401일때 응답 바디가 없음 
-    # response_body = response.json()
+
+    response_body = response.json()
+    assert "401.0001.001" == response_body.get("code")
+    assert "Not authenticated." == response_body.get("message")
+    
 
 

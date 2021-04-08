@@ -8,8 +8,13 @@ import json, time
 from common import api_test_util as util
 from common.api_constants import LogViewerConstants as url_manager
 
-def test_getcomponent_basic(get_lv_baseurl):
-    response = requests.get(get_lv_baseurl + url_manager.getcomponent_api_path, verify=False)
+test_email = url_manager.test_email
+test_pw = url_manager.test_pw
+
+def test_getcomponent_basic(get_lv_baseurl, get_lv_token):
+    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+
+    response = requests.get(get_lv_baseurl + url_manager.getcomponent_api_path, headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
     assert len(response_body) >= 3
@@ -17,29 +22,42 @@ def test_getcomponent_basic(get_lv_baseurl):
     # '["INSIGHT_BACKEND_MMG","INSIGHT_BACKEND_CXR","INFERENCE_SERVER","GATEWAY"]'
     
 
-def test_getloglevel_basic(get_lv_baseurl):
-    response = requests.get(get_lv_baseurl + url_manager.getloglevel_api_path, verify=False)
+def test_getloglevel_basic(get_lv_baseurl, get_lv_token):
+    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+
+    response = requests.get(get_lv_baseurl + url_manager.getloglevel_api_path, headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
     assert len(response_body) == 5
     assert ["DEBUG","WARNING","ERROR","INFO","FATAL"] == response_body
     # '["DEBUG","WARNING","ERROR","INFO","FATAL"]'
 
-def test_getlogtype_basic(get_lv_baseurl):
-    response = requests.get(get_lv_baseurl + url_manager.getlogtype_api_path, verify=False)
+def test_getlogtype_basic(get_lv_baseurl, get_lv_token):
+    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+
+    response = requests.get(get_lv_baseurl + url_manager.getlogtype_api_path, headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
     assert len(response_body) == 2
     assert ["APP","AUDIT"] == response_body
     # '["APP","AUDIT"]'
 
-def test_getlogstatus_basic(get_lv_baseurl):
-    response = requests.get(get_lv_baseurl + url_manager.getlogstatus_api_path, verify=False)
+def test_getlogstatus_basic(get_lv_baseurl, get_lv_token):
+    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+
+    response = requests.get(get_lv_baseurl + url_manager.getlogstatus_api_path, headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
     assert len(response_body) == 3
     assert ["SUCCESS", "FAIL", "FAIL_RETRY"] == response_body
 
+def test_getservicehost_basic(get_lv_baseurl, get_lv_token):
+    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    
+    response = requests.get(get_lv_baseurl + url_manager.getservicehost_api_path, headers=headers, verify=False)
+    assert 200 == response.status_code
+    response_body = response.json()
+    assert len(response_body) > 0
 
 
 

@@ -10,7 +10,7 @@ from common.exceptions import APITestException
 from common.api_constants import LogViewerConstants as url_manager
 
 #new_test_id = "test01"
-new_test_email = "test04@lunit.io"
+new_test_email = "qe_test9@lunit.io"
 new_test_pw = "fnsltakstp123!"
 new_test_pw_chg = "fnsltakstp123!_chg"
 
