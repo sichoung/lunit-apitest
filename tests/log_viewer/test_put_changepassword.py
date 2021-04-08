@@ -10,7 +10,7 @@ from common.exceptions import APITestException
 from common.api_constants import LogViewerConstants as url_manager
 
 #new_test_id = "test01"
-new_test_email = "qe_test9@lunit.io"
+new_test_email = "qe_test10@lunit.io"
 new_test_pw = "fnsltakstp123!"
 new_test_pw_chg = "fnsltakstp123!_chg"
 
@@ -27,7 +27,8 @@ def get_testuser_token(get_lv_baseurl):
     if response.status_code == 200:
         print("prepare... login and get user token")
         response_body = response.json()
-        return response_body.get("accessToken")
+        access_token = response_body.get("accessToken")
+        yield access_token
     else: 
         print("prepare... test user not exist. trying to add new user...")
         # 신규가입
@@ -39,9 +40,25 @@ def get_testuser_token(get_lv_baseurl):
         response = requests.post(get_lv_baseurl + url_manager.signup_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
         if response.status_code == 200: 
             response_body = response.json()
-            return response_body.get("accessToken")
+            access_token = response_body.get("accessToken")
+            yield access_token
         else: 
             raise APITestException("Failed to prepare test user (add new user)- "+str(response.status_code))
+    try:
+        # 다시원래대로변경
+        headers = {"Content-Type": "application/json", "Authorization": "Bearer {}".format(access_token)}
+        payload = {
+            "currentPassword": new_test_pw_chg,
+            "newPassword": new_test_pw,
+            "email": new_test_email
+        }
+        response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+        assert 200 == response.status_code
+        response_body = response.json()
+        assert True == response_body.get("isChanged")
+    except Exception:
+        print("Ignore setup exception")
+    
     
 def test_changepwd_basic(get_lv_baseurl, get_testuser_token):
     """ 테스트 목적 : 비번변경 기본 
@@ -68,17 +85,6 @@ def test_changepwd_basic(get_lv_baseurl, get_testuser_token):
     response_body = response.json()
     access_token = response_body.get("accessToken")
 
-    # 다시원래대로변경
-    headers = {"Content-Type": "application/json", "Authorization": "Bearer {}".format(access_token)}
-    payload = {
-        "currentPassword": new_test_pw_chg,
-        "newPassword": new_test_pw,
-        "email": new_test_email
-    }
-    response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
-    assert 200 == response.status_code
-    response_body = response.json()
-    assert True == response_body.get("isChanged")    
 
 def test_changepwd_invalidnewpassword(get_lv_baseurl, get_testuser_token):
     """ 테스트 목적 : 기준을 만족하지 못하는 신규비밀번호 
