@@ -22,7 +22,7 @@ class LogViewerConstants():
     logdownload_api_path = "/api/v1/logs/download"
 
     #### ACCOUNT ####
-    test_email = "qe_test1@lunit.io"
+    test_email = "qe_test2@lunit.io"
     test_pw = "1q2w3e4r%t"
     test_name = "apitest user"
 #     test_name = "apitest user"

@@ -21,15 +21,32 @@ def test_refreshtoken_basic(get_lv_baseurl):
         "password": test_pw
     }
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
-    assert response.status_code == 200
+    assert response.status_code == 200, response.text
     response_body = response.json()
     first_access_token = response_body.get("accessToken")
-    refresh_token = response_body.get("refreshToken")
-    # 2) 리프레시 
+    first_refresh_token = response_body.get("refreshToken")
+
+    time.sleep(5)
+    # 2)두번째 로그인한 후 처음 access_token 값과 비교. 
+    headers = {"Content-Type": "application/json"}
+    payload = {
+        "email": test_email,
+        "password": test_pw
+    }
+    response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    assert response.status_code == 200, response.text
+    response_body = response.json()
+    second_access_token = response_body.get("accessToken")
+    second_refresh_token = response_body.get("refreshToken")
+    # assert first_access_token != second_access_token
+    print(f"first_access_token= {first_access_token} and \nsecond_access_token= {second_access_token}")
+
+    time.sleep(5)
+    # 3) 리프레시 
     # headers = {"Content-Type": "application/json", "Authorization": "Bearer {}".format(access_token)}
     headers = {"Content-Type": "application/json"}
     payload = {
-        "token": refresh_token
+        "token": second_refresh_token
     }
     response = requests.post(get_lv_baseurl + url_manager.refreshtkn_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 200 == response.status_code
@@ -38,7 +55,8 @@ def test_refreshtoken_basic(get_lv_baseurl):
     new_refresh_token = response_body.get("refreshToken")
     assert new_access_token != None
     assert new_refresh_token != None
-    assert first_access_token != new_access_token, "리프레시 된 access_token이 기존 access_token 값과 동일합니다!"
+    assert first_access_token != new_access_token, "리프레시 된 access_token이 기존 처음 로그인시 access_token 값과 동일합니다!"
+    assert second_access_token != new_access_token, "리프레시 된 access_token이 기존 두번째 로그인시 access_token 값과 동일합니다!"
 
     # 3) 이전 accessToken verify
     old_token_verify = verify_token(get_lv_baseurl + url_manager.verifytkn_api_path, first_access_token)

@@ -100,6 +100,25 @@ def test_login_wrongpw(get_lv_baseurl):
     assert "lockoutCount" in response_body
     assert "coolOffSeconds" in response_body
     
+
+def test_login_invalidpw(get_lv_baseurl):
+    """ 10자 미만의 비밀번호 입력시, 틀린 비밀번호로 걸리는지, BadRequest로 걸리는지 확인 """
+
+    headers = {"Content-Type": "application/json"}
+    payload = {
+        "email": test_email,
+        "password": "12345"
+    }
+    response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    assert 401 == response.status_code
+    # '{"code":"403.1000.001","message":"User not found."}'
+    response_body = response.json()
+    assert "401.1000.001" == response_body.get("code")
+    assert "Invalid credential. Email or password not correct." == response_body.get("message")
+    assert "failureCount" in response_body
+    assert "lockoutCount" in response_body
+    assert "coolOffSeconds" in response_body
+
 def test_login_norequiredfield(get_lv_baseurl):
     headers = {"Content-Type": "application/json"}
     payload = {
@@ -135,7 +154,7 @@ def test_login_failmorethan3times(get_lv_baseurl):
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     assert 401 == response.status_code
 
-    # try right id, pw
+    # try right id, pw => Locking
     payload = {
         "email": test_email,
         "password": test_pw
@@ -144,7 +163,7 @@ def test_login_failmorethan3times(get_lv_baseurl):
     print(response.status_code)
     assert 401 == response.status_code
 
-    # wait 61sec, try right id, pw
+    # wait 62sec, try right id, pw => SUCCESS
     time.sleep(62)
     payload = {
         "email": test_email,
@@ -153,6 +172,17 @@ def test_login_failmorethan3times(get_lv_baseurl):
     response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
     print(response.status_code)
     assert 200 == response.status_code
+
+    # Fail one more time, checking failure_count
+    headers = {"Content-Type": "application/json"}
+    payload = {
+        "email": test_email,
+        "password": "wrong_pwwww"
+    }
+    response = requests.post(get_lv_baseurl + url_manager.login_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
+    assert 401 == response.status_code
+    response_body = response.json()
+    assert 1 == response_body.get("failureCount"), "3회실패 잠김, 다시 정상 로그인했다가 다시 실패한 경우 failure_count 값이초기화되지 않음(0->1로)"
 
 def temp_add_test_account():
     """ API 테스트에 사용하는 별도 계정이 없는 경우 1회성으로 생성하는 함수 
