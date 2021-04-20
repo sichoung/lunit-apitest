@@ -20,7 +20,7 @@ def get_logfile_idlist(get_lv_baseurl, get_lv_token):
         }
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, params=params, verify = False)
     if response.status_code != 200:
-        raise APITestException("Failed to list search - "+response.status_code)
+        raise APITestException("Failed to list search - "+str(response.status_code))
     response_body = response.json()
     contents_element = response_body.get("content")
     result_list = []

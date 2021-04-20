@@ -13,6 +13,7 @@ def test_get_loglist_default_200(get_lv_baseurl, get_lv_token):
     """ 테스트 목적 : 특정 검색 조건없이 전체 조회 후 응답 json의 스키마, 디폴트값 적용 등을 확인(pagesize=100,... )
     """
     headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    # headers = {}
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
     assert response.status_code == 200
     response_body = response.json()

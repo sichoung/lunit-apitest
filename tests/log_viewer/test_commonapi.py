@@ -12,6 +12,7 @@ test_email = url_manager.test_email
 test_pw = url_manager.test_pw
 
 def test_getcomponent_basic(get_lv_baseurl, get_lv_token):
+    # headers = {"Authorization": "Bearer {}".format(get_lv_token)}
     headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
 
     response = requests.get(get_lv_baseurl + url_manager.getcomponent_api_path, headers=headers, verify=False)
@@ -28,8 +29,8 @@ def test_getloglevel_basic(get_lv_baseurl, get_lv_token):
     response = requests.get(get_lv_baseurl + url_manager.getloglevel_api_path, headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
-    assert len(response_body) == 5
-    assert ["DEBUG","WARNING","ERROR","INFO","FATAL"] == response_body
+    assert len(response_body) == 4
+    assert ["DEBUG","INFO","WARNING","ERROR"] == response_body
     # '["DEBUG","WARNING","ERROR","INFO","FATAL"]'
 
 def test_getlogtype_basic(get_lv_baseurl, get_lv_token):
@@ -48,8 +49,8 @@ def test_getlogstatus_basic(get_lv_baseurl, get_lv_token):
     response = requests.get(get_lv_baseurl + url_manager.getlogstatus_api_path, headers=headers, verify=False)
     assert 200 == response.status_code
     response_body = response.json()
-    assert len(response_body) == 3
-    assert ["SUCCESS", "FAIL", "FAIL_RETRY"] == response_body
+    assert len(response_body) == 2
+    assert ["SUCCESS", "FAIL"] == response_body
 
 def test_getservicehost_basic(get_lv_baseurl, get_lv_token):
     headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
@@ -58,6 +59,34 @@ def test_getservicehost_basic(get_lv_baseurl, get_lv_token):
     assert 200 == response.status_code
     response_body = response.json()
     assert len(response_body) > 0
+
+def test_lv_healthcheck(get_lv_baseurl):
+    response = requests.get(get_lv_baseurl + url_manager.gethealthcheck_api_path, verify=False)
+    assert 204 == response.status_code
+
+def test_lv_settinginfo_noqueryparam(get_lv_baseurl):
+        # headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    # params = {
+    #     "includes":"version"
+    # }
+    # response = requests.get(get_lv_baseurl + url_manager.getserverinfo_api_path, params = params, verify=False)
+    response = requests.get(get_lv_baseurl + url_manager.getserverinfo_api_path, verify=False)
+    assert 200 == response.status_code
+    response_body = response.json()
+    # assert response_body["version"]
+    # assert "develop" == response_body["version"]
+
+def test_lv_settinginfo_versioninfo(get_lv_baseurl):
+    # headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    params = {
+        "includes":"version"
+    }
+    response = requests.get(get_lv_baseurl + url_manager.getserverinfo_api_path, params = params, verify=False)
+    assert 200 == response.status_code
+    response_body = response.json()
+    assert response_body["version"]
+    # assert "develop" == response_body["version"]
+
 
 
 
