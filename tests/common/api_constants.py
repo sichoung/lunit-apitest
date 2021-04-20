@@ -16,13 +16,16 @@ class LogViewerConstants():
     getlogstatus_api_path = "/api/v1/commons/log-status"
     getservicehost_api_path = "/api/v1/hosts"
 
+    gethealthcheck_api_path = "/health"
+    getserverinfo_api_path = "/configurations"
+
     #### LOGS ####
     getloglist_api_path = "/api/v1/logs"
     logupload_api_path ="​/api​/v1​/logs"
     logdownload_api_path = "/api/v1/logs/download"
 
     #### ACCOUNT ####
-    test_email = "qe_test2@lunit.io"
+    test_email = "qe_test3@lunit.io"
     test_pw = "1q2w3e4r%t"
     test_name = "apitest user"
 #     test_name = "apitest user"
