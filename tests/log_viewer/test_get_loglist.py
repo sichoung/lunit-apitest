@@ -9,10 +9,10 @@ from common.api_constants import LogViewerConstants as url_manager
 test_email = url_manager.test_email
 test_pw = url_manager.test_pw
 
-def test_get_loglist_default_200(get_lv_baseurl, get_lv_token):
+def test_get_loglist_default_200(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : 특정 검색 조건없이 전체 조회 후 응답 json의 스키마, 디폴트값 적용 등을 확인(pagesize=100,... )
     """
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     # headers = {}
     response = requests.get(get_lv_baseurl + url_manager.getloglist_api_path, headers=headers, verify = False) # = get_dirpath+'/base64_lunit_cert.cer')
     assert response.status_code == 200
@@ -72,7 +72,7 @@ def test_get_loglist_default_200(get_lv_baseurl, get_lv_token):
 #   }
 
 
-def test_get_loglist_search_200(get_lv_baseurl, get_lv_token):
+def test_get_loglist_search_200(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : 여러 검색 조건을 복합적으로 적용하여 조회 후 조회 결과에 반영되었는지 확인
     """
     search_component = "GW" # GW / IS / BE
@@ -81,7 +81,7 @@ def test_get_loglist_search_200(get_lv_baseurl, get_lv_token):
     search_logtype = "APP"
     search_pagesize = 10
 
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     params = {
         'components': search_component, 
         # 'keyword': search_keyword, 
@@ -117,7 +117,7 @@ def test_get_loglist_search_200(get_lv_baseurl, get_lv_token):
         assert this_record.get('logLevel')== search_loglevel
         assert this_record.get('logType')== search_logtype
 
-def test_get_loglist_nodata(get_lv_baseurl, get_lv_token):
+def test_get_loglist_nodata(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : 조회 결과가 없을 때 응답이 어떻게 오는지 확인
     """
     search_component = "IS" # INFERENCE_SERVER / GATEWAY / INSIGHT_BACKEND_CXR / INSIGHT_BACKEND_MMG
@@ -126,7 +126,7 @@ def test_get_loglist_nodata(get_lv_baseurl, get_lv_token):
     search_logtype = "APP"
     search_pagesize = 10
 
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     params = {
         'components': search_component, 
         'keyword': search_keyword, 
@@ -154,13 +154,13 @@ def test_get_loglist_nodata(get_lv_baseurl, get_lv_token):
 #     """
 #     print("")
 
-def test_get_loglist_paging(get_lv_baseurl, get_lv_token):
+def test_get_loglist_paging(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : 조회 결과에 대한 페이징 처리 확인.. 
     """
     search_pagesize = 10
     search_page = 3
 
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     params = {
         'page': search_page, 
         'size': search_pagesize
@@ -174,7 +174,7 @@ def test_get_loglist_paging(get_lv_baseurl, get_lv_token):
     assert pageable_element.get("pageSize") == search_pagesize
     assert pageable_element.get("pageNumber") == search_page
 
-def test_get_loglist_search_capitalkeyword(get_lv_baseurl, get_lv_token):
+def test_get_loglist_search_capitalkeyword(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : Server Error 텍스트에 대해 키워드 검색 대문자 SERVER ERROR로 검색이 되는지 확인 
     """
     search_uppercase_keyword = "TRY" # find 'Server Error' log text with 'SERVER ERROR' uppercase keyword
@@ -183,7 +183,7 @@ def test_get_loglist_search_capitalkeyword(get_lv_baseurl, get_lv_token):
     search_loglevel = "DEBUG" # DEBUG / ERROR / FATAL 
     search_logtype = "APP"
 
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     params = {
         'components': search_component, 
         'keyword': search_uppercase_keyword, 
@@ -202,14 +202,14 @@ def test_get_loglist_search_capitalkeyword(get_lv_baseurl, get_lv_token):
         assert "Try" in this_record.get('log')
 
 # @pytest.mark.skip(reason="not yet find valid date format")
-def test_get_loglist_daterangesearch(get_lv_baseurl, get_lv_token):
+def test_get_loglist_daterangesearch(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : 날짜 범위로 검색 
     """
     search_startdate = "2020-09-15 05:45" # '2020-09-15T05:45:54.905'
     search_enddate = "2021-06-30 05:45"
     # search_keyword = "try"
 
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     params = {
         # startDate, endDate, 
         'startDate': search_startdate, 
@@ -227,14 +227,14 @@ def test_get_loglist_daterangesearch(get_lv_baseurl, get_lv_token):
     # for this_record in contents_element:
     #     assert "rror" in this_record.get('log')
 
-def test_get_loglist_switcheddaterange(get_lv_baseurl, get_lv_token):
+def test_get_loglist_switcheddaterange(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : 날짜 범위 앞뒤 선후관계가 바뀐 상태로 검색 요청
     """
     search_startdate = "2020-09-16 05:45" # '2020-09-15T05:45:54.905'
     search_enddate = "2020-09-14 05:45"
     search_keyword = "rror"
     
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     params = {
         # startDate, endDate, 
         'startDate': search_startdate, 
@@ -251,13 +251,13 @@ def test_get_loglist_switcheddaterange(get_lv_baseurl, get_lv_token):
     assert "400.0001.002" == response_body.get("code")
     assert "Invalid date." == response_body.get("message")
 
-def test_get_loglist_invalid_dateformat(get_lv_baseurl, get_lv_token):
+def test_get_loglist_invalid_dateformat(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : invalid format - 날짜 형태에 2020-09-15T 입력했을 때 응답 확인
     """
     search_startdate = "2020-09-15" # '2020-09-15 05:45'
     search_enddate = "2020-09-15"
 
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     params = {
         # startDate, endDate, 
         'startDate': search_startdate, 
@@ -273,7 +273,7 @@ def test_get_loglist_invalid_dateformat(get_lv_baseurl, get_lv_token):
     # assert response_body.get("code") == "500.0001.0005"
     # assert response_body.get("message") == "Text '2020-09-15T' could not be parsed at index 10"
 
-def test_get_loglist_wrongcomponenttype(get_lv_baseurl, get_lv_token):
+def test_get_loglist_wrongcomponenttype(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : invalid_COMPONENT
     """
     wrong_component = "invalid_COMPONENT"
@@ -282,7 +282,7 @@ def test_get_loglist_wrongcomponenttype(get_lv_baseurl, get_lv_token):
     search_logtype = "APP"
     search_pagesize = 10
 
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     params = {
         'components': wrong_component, 
         'logLevels': search_loglevel, 
@@ -297,7 +297,7 @@ def test_get_loglist_wrongcomponenttype(get_lv_baseurl, get_lv_token):
     assert response_body.get("code") == "500.0001.0005"
     assert response_body.get("message") == "Failed to convert value of type 'java.lang.String' to required type 'java.util.List'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [io.lunit.log.collector.server.code.Component] for value 'invalid_COMPONENT'; nested exception is java.lang.IllegalArgumentException: No enum constant io.lunit.log.collector.server.code.Component.invalid_COMPONENT"
 
-def test_get_loglist_wrongloglevel(get_lv_baseurl, get_lv_token):
+def test_get_loglist_wrongloglevel(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : 잘못된 값 - 로그레벨에 대한 응답 확인
     """
     search_component = "IS" # INFERENCE_SERVER / GATEWAY / INSIGHT_BACKEND_CXR / INSIGHT_BACKEND_MMG
@@ -307,7 +307,7 @@ def test_get_loglist_wrongloglevel(get_lv_baseurl, get_lv_token):
     search_logtype = "APP"
     search_pagesize = 10
 
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     params = {
         'components': search_component, 
         'keyword': search_keyword, 
@@ -325,7 +325,7 @@ def test_get_loglist_wrongloglevel(get_lv_baseurl, get_lv_token):
     assert response_body.get("code") == "500.0001.0005"
     assert response_body.get("message") == "Failed to convert value of type 'java.lang.String' to required type 'java.util.List'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [io.lunit.log.collector.server.code.LogLevel] for value 'invaliddddd'; nested exception is java.lang.IllegalArgumentException: No enum constant io.lunit.log.collector.server.code.LogLevel.invaliddddd"
 
-def test_get_loglist_wronglogtype(get_lv_baseurl, get_lv_token):
+def test_get_loglist_wronglogtype(get_lv_baseurl, prepare_testuser_gettoken):
     """ 테스트 목적 : 잘못된 값 - 로그타입에 대한 응답 확인
     """
     search_component = "IS" # INFERENCE_SERVER / GATEWAY / INSIGHT_BACKEND_CXR / INSIGHT_BACKEND_MMG
@@ -335,7 +335,7 @@ def test_get_loglist_wronglogtype(get_lv_baseurl, get_lv_token):
     wrong_logtype = "INVAL"
     search_pagesize = 10
 
-    headers = {"Authorization": "Bearer {}".format(get_lv_token(test_email, test_pw))}
+    headers = {"Authorization": "Bearer {}".format(prepare_testuser_gettoken(test_email, test_pw))}
     params = {
         'components': search_component, 
         'keyword': search_keyword, 

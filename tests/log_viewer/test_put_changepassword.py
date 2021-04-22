@@ -155,7 +155,7 @@ def test_changepwd_samepw(get_lv_baseurl,get_testuser_token):
         "email": new_test_email
     }
     response = requests.put(get_lv_baseurl + url_manager.chgpw_api_path, data=json.dumps(payload,indent=4), headers=headers, verify=False)
-    assert 400 == response.status_code #'{"code":"400.1000.001","message":"Invalid password. Password not correct."}'
+    assert 400 == response.status_code, response.text #'{"code":"400.1000.001","message":"Invalid password. Password not correct."}'
     response_body = response.json()
     assert "not yet defined" == response_body.get("message")
 
